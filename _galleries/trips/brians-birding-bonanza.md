@@ -5,8 +5,8 @@ section: trips
 order: 10
 back_url: /home/trips/
 back_title: Trips
-location:
-year:
+location: Whitney, Canada
+year: 2024
 # cover: /photos/trips/brians-birding-bonanza/your-favorite.jpg
 # captions:
 #   01.jpg: Describe the photo here
