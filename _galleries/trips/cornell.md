@@ -6,7 +6,7 @@ order: 6
 back_url: /home/trips/
 back_title: Trips
 location: Ithaca, New York
-year:
+year: 2022-2026
 recent: true
 recent_order: 5
 # cover: /photos/trips/cornell/your-favorite.jpg
