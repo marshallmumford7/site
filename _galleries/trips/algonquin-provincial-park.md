@@ -5,8 +5,8 @@ section: trips
 order: 5
 back_url: /home/trips/
 back_title: Trips
-location: Algonquin Provincial Park, Canada
-year:
+location: Whitney, Canada
+year: 2026
 recent: true
 recent_order: 4
 # cover: /photos/trips/algonquin-provincial-park/your-favorite.jpg
