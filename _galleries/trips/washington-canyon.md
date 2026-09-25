@@ -2,7 +2,7 @@
 title: Washington Canyon
 folder: trips/washington-canyon
 section: trips
-order: 5
+order: 7
 back_url: /home/trips/
 back_title: Trips
 location:

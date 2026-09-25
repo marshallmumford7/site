@@ -2,7 +2,7 @@
 title: Florida
 folder: trips/florida
 section: trips
-order: 6
+order: 8
 back_url: /home/trips/
 back_title: Trips
 location:

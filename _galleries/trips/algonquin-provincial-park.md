@@ -2,10 +2,10 @@
 title: Algonquin Provincial Park
 folder: trips/algonquin-provincial-park
 section: trips
-order: 3
+order: 5
 back_url: /home/trips/
 back_title: Trips
-location:
+location: Algonquin Provincial Park, Canada
 year:
 recent: true
 recent_order: 4

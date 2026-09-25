@@ -2,7 +2,7 @@
 title: Alaska
 folder: trips/alaska
 section: trips
-order: 1
+order: 3
 back_url: /home/trips/
 back_title: Trips
 location:

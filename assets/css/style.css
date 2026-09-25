@@ -150,6 +150,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 .crumb a::before { content: "\2039\00a0"; }
 .crumb a:hover { color: var(--accent); }
 .meta { margin: 0.6rem 0 0; color: var(--muted); }
+.meta-year { margin-top: 0.1rem; font-size: 0.9rem; }
 .notes { max-width: 38rem; margin-top: 1.5rem; font-family: var(--serif); font-size: 1.2rem; line-height: 1.7; }
 .notes p { margin: 0 0 1em; }
 

@@ -2,10 +2,10 @@
 title: Cape May
 folder: trips/cape-may
 section: trips
-order: 11
+order: 13
 back_url: /home/trips/
 back_title: Trips
-location:
+location: Cape May, New Jersey
 year:
 # cover: /photos/trips/cape-may/your-favorite.jpg
 # captions:

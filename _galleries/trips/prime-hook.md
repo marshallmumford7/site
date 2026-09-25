@@ -2,10 +2,10 @@
 title: Prime Hook
 folder: trips/prime-hook
 section: trips
-order: 12
+order: 14
 back_url: /home/trips/
 back_title: Trips
-location:
+location: Milton, Delaware
 year:
 # cover: /photos/trips/prime-hook/your-favorite.jpg
 # captions:

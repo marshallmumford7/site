@@ -2,7 +2,7 @@
 title: Aurora
 folder: trips/aurora
 section: trips
-order: 7
+order: 9
 back_url: /home/trips/
 back_title: Trips
 location:

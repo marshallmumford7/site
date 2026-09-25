@@ -2,7 +2,7 @@
 title: "Brian's Birding Bonanza"
 folder: trips/brians-birding-bonanza
 section: trips
-order: 8
+order: 10
 back_url: /home/trips/
 back_title: Trips
 location:

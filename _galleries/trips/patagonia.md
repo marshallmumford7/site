@@ -2,7 +2,7 @@
 title: Patagonia
 folder: trips/patagonia
 section: trips
-order: 2
+order: 4
 back_url: /home/trips/
 back_title: Trips
 location:

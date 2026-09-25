@@ -2,10 +2,10 @@
 title: CFC Behind the Scenes
 folder: trips/cfc-behind-the-scenes
 section: trips
-order: 14
+order: 16
 back_url: /home/trips/
 back_title: Trips
-location:
+location: Ithaca, New York
 year:
 # cover: /photos/trips/cfc-behind-the-scenes/your-favorite.jpg
 # captions:

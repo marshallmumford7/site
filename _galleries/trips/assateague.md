@@ -2,7 +2,7 @@
 title: Assateague
 folder: trips/assateague
 section: trips
-order: 13
+order: 15
 back_url: /home/trips/
 back_title: Trips
 location:

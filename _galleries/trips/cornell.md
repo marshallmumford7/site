@@ -2,10 +2,10 @@
 title: Cornell
 folder: trips/cornell
 section: trips
-order: 4
+order: 6
 back_url: /home/trips/
 back_title: Trips
-location:
+location: Ithaca, New York
 year:
 recent: true
 recent_order: 5

@@ -2,10 +2,10 @@
 title: Cornell Fashion Collective 2023
 folder: trips/cornell-fashion-collective-2023
 section: trips
-order: 10
+order: 12
 back_url: /home/trips/
 back_title: Trips
-location:
+location: Ithaca, New York
 year:
 # cover: /photos/trips/cornell-fashion-collective-2023/your-favorite.jpg
 # captions:

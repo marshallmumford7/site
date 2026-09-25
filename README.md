@@ -14,8 +14,8 @@ Drop exported JPEGs into the matching folder and push. That's it.
 | Homepage Instagram row | `photos/home/instagram/` (first 6 are shown) |
 | About page portrait | `photos/home/portrait.jpg` |
 | Alaska | `photos/trips/alaska/` |
-| Shoals Marine Lab | `photos/experiences/shoals-marine-lab/` |
-| Shoals, Teaching Assistant | `photos/experiences/shoals-teaching-assistant/` |
+| Shoals Marine Lab | `photos/trips/shoals-marine-lab/` |
+| Shoals, Teaching Assistant | `photos/trips/shoals-teaching-assistant/` |
 | ...and so on | see the `folder:` line in each file in `_galleries/` |
 
 Tips:
@@ -34,7 +34,7 @@ title: Alaska
 folder: trips/alaska
 section: trips
 order: 1                 # position on the Trips page
-location: Katmai, Alaska # optional, shown under the title
+location: Juneau, Alaska # optional. US: City, State. Elsewhere: Place, Country
 year: 2024               # optional
 recent: true             # show on the homepage under "Featured work" (first 6)
 recent_order: 6          # position in that homepage list
@@ -57,6 +57,7 @@ and create the matching folder in `photos/`.
 - `_includes/` – header, footer, gallery tile, photo grid
 - `assets/css/style.css` – all styling; colors and fonts are at the top
 - `assets/js/lightbox.js` – full-screen photo viewer
+- `redirects/` – keeps old Experiences links working
 - `_config.yml` – site name, Instagram/eBird links, and your email for the contact button
 
 URLs match the old Google Site (`/home/trips/alaska/` etc.), so existing links keep working.
