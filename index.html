@@ -3,38 +3,49 @@ layout: default
 title: Home
 body_class: home
 ---
-{% assign hero = site.static_files | where: "path", site.hero_image | first %}
-<section class="hero{% unless hero %} hero-empty{% endunless %}">
-  {% if hero %}<img src="{{ site.hero_image | relative_url }}" alt="" fetchpriority="high">{% endif %}
-  <div class="hero-text wrap">
-    <h1>Marshall Mumford</h1>
-    <p>{{ site.tagline }}</p>
-  </div>
+<section class="hero" aria-label="Featured photographs">
+  {% include slideshow.html %}
+  <a class="hero-cue" href="#intro" aria-label="Scroll to introduction">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+  </a>
 </section>
 
-<section class="wrap intro">
-  <p class="bio">Marshall is a self-taught photographer from Delaware. He began shooting cardinals and squirrels near his house five years ago and has since taken his camera around the world while studying ecology at Cornell University.</p>
-  <p>While his work has spanned many genres, he always comes back to wildlife photography, above and below the water. Along the way, he has met incredible people and seen beautiful places, which have enriched his photography skills and his appreciation and commitment to nature and conservation.</p>
+<section class="wrap intro" id="intro">
+  <h1>Hi, I'm Marshall</h1>
+  <p>I'm a self-taught photographer from Delaware studying ecology at Cornell. My work always comes back to wildlife, above and below the water.</p>
+  <p class="actions">
+    <a class="button" href="{{ '/home/trips/' | relative_url }}">View portfolio</a>
+    <a class="button button-quiet" href="{{ '/about/' | relative_url }}">About me</a>
+  </p>
 </section>
 
-{% assign featured_count = 0 %}
-{% capture featured %}
-  {% for p in site.featured_photos %}
-    {% assign file = site.static_files | where: "path", p | first %}
-    {% if file %}
-      {% assign featured_count = featured_count | plus: 1 %}
-      <li><a class="photo" href="{{ p | relative_url }}"><img src="{{ p | relative_url }}" alt="" loading="lazy" decoding="async"></a></li>
-    {% endif %}
-  {% endfor %}
-{% endcapture %}
-{% if featured_count > 0 %}
-<ul class="wrap wrap-wide featured" data-gallery>{{ featured }}</ul>
-{% endif %}
-
-<section class="wrap recent">
-  <h2>Recent adventures</h2>
+<section class="wrap featured-work">
+  <h2 class="section-title">Featured work</h2>
   {% assign recent = site.galleries | where: "recent", true | sort: "recent_order" %}
   <ul class="tiles">
-    {% for g in recent %}{% include tile.html gallery=g %}{% endfor %}
+    {% for g in recent limit: 6 %}{% include tile.html gallery=g %}{% endfor %}
   </ul>
+  <p class="actions"><a class="button button-quiet" href="{{ '/home/trips/' | relative_url }}">See all trips</a></p>
+</section>
+
+<section class="mosaic-section">
+  {% include photos.html folder="home/mosaic" class="mosaic" alt="Photograph by Marshall Mumford" %}
+</section>
+
+<section class="wrap closing" id="contact">
+  <h2 class="section-title">Contact</h2>
+  <p>Questions about a photo, prints, or working together? I'd love to hear from you.</p>
+  <p class="actions">
+    {% if site.email %}<a class="button" href="mailto:{{ site.email }}">Email me</a>{% endif %}
+    <a class="button{% if site.email %} button-quiet{% endif %}" href="https://ig.me/m/{{ site.instagram_handle }}">Message me on Instagram</a>
+  </p>
+</section>
+
+<section class="instagram">
+  <div class="wrap">
+    <h2 class="section-title"><a href="{{ site.instagram }}">@{{ site.instagram_handle }}</a></h2>
+    <p>More recent work on Instagram</p>
+  </div>
+  {% include photos.html folder="home/instagram" class="insta-row" limit=6 alt="Photograph by Marshall Mumford" %}
+  <p class="wrap actions"><a class="button" href="{{ site.instagram }}">Follow on Instagram</a></p>
 </section>

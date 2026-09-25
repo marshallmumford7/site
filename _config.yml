@@ -8,13 +8,16 @@ url: "https://www.mrm.photography"
 # Links shown in the header and footer
 instagram: https://www.instagram.com/marshallwildlife/
 ebird: https://media.ebird.org/catalog?userId=USER3002818
+instagram_handle: marshallwildlife
+email:            # add your email to show an "Email me" button, e.g. you@example.com
 
-# Homepage images (drop these files into photos/home/)
-hero_image: /photos/home/hero.jpg
-featured_photos:
-  - /photos/home/featured-1.jpg
-  - /photos/home/featured-2.jpg
-  - /photos/home/featured-3.jpg
+# Homepage images live in folders under photos/home/:
+#   slideshow/  full-screen rotating images at the top (landscape works best)
+#   mosaic/     the photo wall further down (8 or 12 looks best)
+#   instagram/  optional row of 6 above the Instagram link
+#   portrait.jpg  photo of you for the About page
+# Used for link previews when shared on social media:
+hero_image: /photos/home/slideshow/01.jpg
 
 # Each file in _galleries/ becomes a page at the same URL as the old Google Site
 collections:

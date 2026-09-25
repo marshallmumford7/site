@@ -1,8 +1,9 @@
 {%- assign prefix = "/photos/" | append: include.folder | append: "/" -%}
 {%- assign files = site.static_files | sort: "path" -%}
 {%- assign count = 0 -%}
-<ul class="photo-grid" data-gallery>
+<ul class="{{ include.class | default: 'photo-grid' }}" data-gallery>
 {%- for f in files -%}
+  {%- if include.limit and count >= include.limit -%}{%- break -%}{%- endif -%}
   {%- assign dir = f.path | remove: f.name -%}
   {%- if dir == prefix -%}
     {%- assign ext = f.extname | downcase -%}

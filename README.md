@@ -9,8 +9,10 @@ Drop exported JPEGs into the matching folder and push. That's it.
 
 | Page | Folder |
 | --- | --- |
-| Homepage hero | `photos/home/hero.jpg` |
-| Homepage row of three | `photos/home/featured-1.jpg`, `-2`, `-3` |
+| Homepage slideshow (rotates every 6 s) | `photos/home/slideshow/` (landscape shots, 3–6 is plenty) |
+| Homepage photo wall | `photos/home/mosaic/` (use 5, 10 or 15 photos so the pattern fills evenly) |
+| Homepage Instagram row | `photos/home/instagram/` (first 6 are shown) |
+| About page portrait | `photos/home/portrait.jpg` |
 | Alaska | `photos/trips/alaska/` |
 | Shoals Marine Lab | `photos/experiences/shoals-marine-lab/` |
 | Shoals, Teaching Assistant | `photos/experiences/shoals-teaching-assistant/` |
@@ -34,7 +36,7 @@ section: trips
 order: 1                 # position on the Trips page
 location: Katmai, Alaska # optional, shown under the title
 year: 2024               # optional
-recent: true             # show on the homepage under "Recent adventures"
+recent: true             # show on the homepage under "Featured work" (first 6)
 recent_order: 6          # position in that homepage list
 captions:                # optional, shown in the full-screen viewer
   01.jpg: Brown bear fishing at Brooks Falls
@@ -49,12 +51,13 @@ and create the matching folder in `photos/`.
 
 ## Where things live
 
-- `index.html` – homepage (bio text is here)
+- `index.html` – homepage (greeting, contact text)
+- `about.html` – About page (full bio)
 - `_layouts/` – page templates (`default`, `gallery`, `section`)
 - `_includes/` – header, footer, gallery tile, photo grid
 - `assets/css/style.css` – all styling; colors and fonts are at the top
 - `assets/js/lightbox.js` – full-screen photo viewer
-- `_config.yml` – site name, tagline, Instagram/eBird links
+- `_config.yml` – site name, Instagram/eBird links, and your email for the contact button
 
 URLs match the old Google Site (`/home/trips/alaska/` etc.), so existing links keep working.
 

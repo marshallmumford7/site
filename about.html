@@ -1,0 +1,16 @@
+---
+layout: default
+title: About
+permalink: /about/
+---
+{% assign portrait = site.static_files | where: "path", "/photos/home/portrait.jpg" | first %}
+<article class="wrap about{% if portrait %} has-portrait{% endif %}">
+  {% if portrait %}<img class="portrait" src="{{ '/photos/home/portrait.jpg' | relative_url }}" alt="Marshall Mumford with his camera">{% endif %}
+  <div class="about-text">
+    <h1>About me</h1>
+    <p>I'm a self-taught photographer from Delaware. I began shooting cardinals and squirrels near my house five years ago and have since taken my camera around the world while studying ecology at Cornell University.</p>
+    <p>While my work has spanned many genres, I always come back to wildlife photography, above and below the water. Along the way I've met incredible people and seen beautiful places, which have sharpened my photography and deepened my commitment to nature and conservation.</p>
+    <p>You can also find my bird records and sound recordings on <a href="{{ site.ebird }}">eBird</a>.</p>
+    <p class="actions"><a class="button" href="{{ '/#contact' | relative_url }}">Get in touch</a></p>
+  </div>
+</article>
