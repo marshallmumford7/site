@@ -12,7 +12,7 @@
   <meta property="og:image" content="{{ page.cover | default: site.hero_image | absolute_url }}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/img/favicon-32.png' | relative_url }}">
   <link rel="apple-touch-icon" href="{{ '/assets/img/icon.png' | relative_url }}">
-  <meta name="theme-color" content="#71a1af"><text y='.9em' font-size='90'>🪶</text></svg>">
+  <meta name="theme-color" content="#71a1af">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500&family=Public+Sans:wght@400;500&display=swap" rel="stylesheet">
@@ -26,6 +26,7 @@
   </main>
   {% include footer.html %}
   <script src="{{ '/assets/js/lightbox.js' | relative_url }}" defer></script>
+  <script src="{{ '/assets/js/protect.js' | relative_url }}" defer></script>
   {% if page.body_class == "home" %}<script src="{{ '/assets/js/slideshow.js' | relative_url }}" defer></script>{% endif %}
 </body>
 </html>

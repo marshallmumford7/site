@@ -200,3 +200,10 @@ ul { list-style: none; margin: 0; padding: 0; }
   .tile-img img, .slide { transition: none; }
 }
 .lb-btn[hidden] { display: none; }
+
+/* ---------- Copyright notice on right-click ---------- */
+img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
+.copyright-note { position: fixed; left: 0; top: 0; z-index: 1000; padding: 0.6rem 0.95rem; background: var(--ink); color: var(--paper); font-size: 0.85rem; white-space: nowrap; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25); pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity 0.15s, transform 0.15s; }
+.copyright-note.is-visible { opacity: 1; transform: none; }
+.lightbox .copyright-note { background: #fff; color: #222; }
+@media (prefers-reduced-motion: reduce) { .copyright-note { transition: none; } }
