@@ -1,5 +1,5 @@
 ---
-title: Cape May
+title: Ocean City Rookery
 folder: trips/cape-may
 section: trips
 order: 13
