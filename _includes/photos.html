@@ -1,0 +1,19 @@
+{%- assign prefix = "/photos/" | append: include.folder | append: "/" -%}
+{%- assign files = site.static_files | sort: "path" -%}
+{%- assign count = 0 -%}
+<ul class="photo-grid" data-gallery>
+{%- for f in files -%}
+  {%- assign dir = f.path | remove: f.name -%}
+  {%- if dir == prefix -%}
+    {%- assign ext = f.extname | downcase -%}
+    {%- if ext == ".jpg" or ext == ".jpeg" or ext == ".png" or ext == ".webp" or ext == ".avif" -%}
+      {%- assign count = count | plus: 1 -%}
+      {%- assign caption = include.captions[f.name] -%}
+  <li><a class="photo" href="{{ f.path | relative_url }}"{% if caption %} data-caption="{{ caption | escape }}"{% endif %}><img src="{{ f.path | relative_url }}" alt="{{ caption | default: include.alt | escape }}" loading="lazy" decoding="async"></a></li>
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor %}
+</ul>
+{% if count == 0 and include.show_empty %}
+<p class="empty">No photos here yet. Add images to <code>photos/{{ include.folder }}/</code> and they'll appear automatically.</p>
+{% endif %}

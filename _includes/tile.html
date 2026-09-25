@@ -1,0 +1,25 @@
+{%- assign g = include.gallery -%}
+{%- assign cover = "" -%}
+{%- if g.cover -%}
+  {%- assign cover = g.cover | relative_url -%}
+{%- else -%}
+  {%- assign prefix = "/photos/" | append: g.folder | append: "/" -%}
+  {%- assign files = site.static_files | sort: "path" -%}
+  {%- for f in files -%}
+    {%- assign dir = f.path | remove: f.name -%}
+    {%- if dir == prefix -%}
+      {%- assign ext = f.extname | downcase -%}
+      {%- if ext == ".jpg" or ext == ".jpeg" or ext == ".png" or ext == ".webp" or ext == ".avif" -%}
+        {%- assign cover = f.path | relative_url -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+<li class="tile">
+  <a href="{{ g.url | relative_url }}">
+    <span class="tile-img">{% if cover != "" %}<img src="{{ cover }}" alt="" loading="lazy" decoding="async">{% endif %}</span>
+    <span class="tile-title">{{ g.title }}</span>
+    {% if g.location %}<span class="tile-meta">{{ g.location }}</span>{% endif %}
+  </a>
+</li>

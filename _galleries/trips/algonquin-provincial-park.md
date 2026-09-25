@@ -1,0 +1,16 @@
+---
+title: Algonquin Provincial Park
+folder: trips/algonquin-provincial-park
+section: trips
+order: 3
+back_url: /home/trips/
+back_title: Trips
+location:
+year:
+recent: true
+recent_order: 4
+# cover: /photos/trips/algonquin-provincial-park/your-favorite.jpg
+# captions:
+#   01.jpg: Describe the photo here
+---
+

@@ -1,0 +1,40 @@
+---
+layout: default
+title: Home
+body_class: home
+---
+{% assign hero = site.static_files | where: "path", site.hero_image | first %}
+<section class="hero{% unless hero %} hero-empty{% endunless %}">
+  {% if hero %}<img src="{{ site.hero_image | relative_url }}" alt="" fetchpriority="high">{% endif %}
+  <div class="hero-text wrap">
+    <h1>Marshall Mumford</h1>
+    <p>{{ site.tagline }}</p>
+  </div>
+</section>
+
+<section class="wrap intro">
+  <p class="bio">Marshall is a self-taught photographer from Delaware. He began shooting cardinals and squirrels near his house five years ago and has since taken his camera around the world while studying ecology at Cornell University.</p>
+  <p>While his work has spanned many genres, he always comes back to wildlife photography, above and below the water. Along the way, he has met incredible people and seen beautiful places, which have enriched his photography skills and his appreciation and commitment to nature and conservation.</p>
+</section>
+
+{% assign featured_count = 0 %}
+{% capture featured %}
+  {% for p in site.featured_photos %}
+    {% assign file = site.static_files | where: "path", p | first %}
+    {% if file %}
+      {% assign featured_count = featured_count | plus: 1 %}
+      <li><a class="photo" href="{{ p | relative_url }}"><img src="{{ p | relative_url }}" alt="" loading="lazy" decoding="async"></a></li>
+    {% endif %}
+  {% endfor %}
+{% endcapture %}
+{% if featured_count > 0 %}
+<ul class="wrap wrap-wide featured" data-gallery>{{ featured }}</ul>
+{% endif %}
+
+<section class="wrap recent">
+  <h2>Recent adventures</h2>
+  {% assign recent = site.galleries | where: "recent", true | sort: "recent_order" %}
+  <ul class="tiles">
+    {% for g in recent %}{% include tile.html gallery=g %}{% endfor %}
+  </ul>
+</section>

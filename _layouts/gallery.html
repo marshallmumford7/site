@@ -1,0 +1,31 @@
+---
+layout: default
+---
+<article class="gallery">
+  <header class="wrap gallery-head">
+    {% if page.back_url %}<p class="crumb"><a href="{{ page.back_url | relative_url }}">{{ page.back_title }}</a></p>{% endif %}
+    <h1>{{ page.title }}</h1>
+    {% if page.location or page.year %}
+    <p class="meta">{{ page.location }}{% if page.location and page.year %}, {% endif %}{{ page.year }}</p>
+    {% endif %}
+    {% assign notes = content | strip %}
+    {% if notes != "" %}<div class="notes">{{ content }}</div>{% endif %}
+  </header>
+
+  {% if page.key %}
+    {% assign subs = site.galleries | where: "section", page.key | sort: "order" %}
+    {% if subs.size > 0 %}
+    <ul class="wrap tiles tiles-small">
+      {% for g in subs %}{% include tile.html gallery=g %}{% endfor %}
+    </ul>
+    {% endif %}
+  {% endif %}
+
+  <div class="wrap wrap-wide">
+    {% if page.key %}
+      {% include photos.html folder=page.folder captions=page.captions alt=page.title show_empty=false %}
+    {% else %}
+      {% include photos.html folder=page.folder captions=page.captions alt=page.title show_empty=true %}
+    {% endif %}
+  </div>
+</article>

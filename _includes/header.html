@@ -1,0 +1,12 @@
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="wordmark" href="{{ '/' | relative_url }}">Marshall Mumford</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="{{ '/home/trips/' | relative_url }}"{% if page.url contains '/home/trips/' %} aria-current="page"{% endif %}>Trips</a></li>
+        <li><a href="{{ '/home/experiences/' | relative_url }}"{% if page.url contains '/home/experiences/' %} aria-current="page"{% endif %}>Experiences</a></li>
+        <li><a href="{{ site.instagram }}">Instagram</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,33 @@
+# Site settings
+title: Marshall Mumford Photography
+author: Marshall Mumford
+tagline: Wildlife photography, above and below the water.
+description: Wildlife and nature photography by Marshall Mumford, a self-taught photographer from Delaware studying ecology at Cornell.
+url: "https://www.mrm.photography"
+
+# Links shown in the header and footer
+instagram: https://www.instagram.com/marshallwildlife/
+ebird: https://media.ebird.org/catalog?userId=USER3002818
+
+# Homepage images (drop these files into photos/home/)
+hero_image: /photos/home/hero.jpg
+featured_photos:
+  - /photos/home/featured-1.jpg
+  - /photos/home/featured-2.jpg
+  - /photos/home/featured-3.jpg
+
+# Each file in _galleries/ becomes a page at the same URL as the old Google Site
+collections:
+  galleries:
+    output: true
+    permalink: /home/:path/
+
+defaults:
+  - scope:
+      path: ""
+      type: galleries
+    values:
+      layout: gallery
+
+exclude:
+  - README.md
