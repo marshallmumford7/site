@@ -46,6 +46,10 @@ body_class: home
     <h2 class="section-title"><a href="{{ site.instagram }}">@{{ site.instagram_handle }}</a></h2>
     <p>More recent work on Instagram</p>
   </div>
+  {% if site.behold_feed_id %}
+  <ul class="insta-row insta-live" data-behold="{{ site.behold_feed_id }}" data-profile="{{ site.instagram }}" aria-busy="true"></ul>
+  {% else %}
   {% include photos.html folder="home/instagram" class="insta-row" limit=6 alt="Photograph by Marshall Mumford" %}
+  {% endif %}
   <p class="wrap actions"><a class="button" href="{{ site.instagram }}">Follow on Instagram</a></p>
 </section>
