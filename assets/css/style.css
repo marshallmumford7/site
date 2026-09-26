@@ -99,29 +99,26 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 .featured-work { padding-bottom: clamp(4rem, 10vw, 7rem); }
 
-/* Featured carousel */
-.carousel { --group-gap: 6px; overflow: hidden; }
+/* Featured carousel: one continuous wall, laid out by assets/js/home.js */
+.carousel { overflow: hidden; }
 .carousel-track { display: flex; width: max-content; }
-.carousel-set { display: flex; align-items: flex-start; column-gap: var(--group-gap); padding-right: var(--group-gap); padding-bottom: var(--stagger, 0px); }
-/* Every other group sits a little lower, so the strip reads as one staggered wall */
-.carousel-set .cgroup:nth-child(even) { margin-top: var(--stagger, 0px); }
-.cgroup { flex: none; margin: 0; }
-.cgroup-box { position: relative; width: var(--block, 480px); height: var(--block, 480px); transition: opacity 0.6s ease; }
+.carousel-set { position: relative; flex: none; height: var(--wall, 480px); }
+.cgroup, .cgroup-box { display: contents; }
 .cgroup-box a { position: absolute; display: block; overflow: hidden; background: var(--tile-bg); cursor: zoom-in; }
 .cgroup-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
 .cgroup-box a:hover img { transform: scale(1.04); }
-.js .carousel:not(.is-ready) { opacity: 0; }
-.js .cgroup:not(.is-laid) .cgroup-box { opacity: 0; }
+.js .carousel { opacity: 0; transition: opacity 0.6s ease; }
+.js .carousel.is-ready { opacity: 1; }
 .carousel.is-ready .carousel-track { animation: carousel-scroll var(--duration, 60s) linear infinite; }
 .carousel:hover .carousel-track, .carousel:focus-within .carousel-track, .carousel.is-paused .carousel-track { animation-play-state: paused; }
 @keyframes carousel-scroll { to { transform: translateX(-50%); } }
 .carousel-controls { display: flex; justify-content: flex-end; margin-top: 0.75rem; }
 .carousel-toggle { border: 0; background: none; padding: 0.25rem 0; font: 500 0.72rem/1 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); border-bottom: 2px solid var(--teal); cursor: pointer; }
 .carousel-toggle:hover { color: var(--accent); }
-/* Without JavaScript: simple grids you can scroll sideways */
+/* Without JavaScript: a simple strip you can scroll sideways */
 html:not(.js) .carousel { overflow-x: auto; }
-html:not(.js) .cgroup-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; height: auto; }
-html:not(.js) .cgroup-box a { position: static; aspect-ratio: 1; }
+html:not(.js) .carousel-set { display: flex; gap: 6px; height: auto; }
+html:not(.js) .cgroup-box a { position: static; flex: none; width: 14rem; aspect-ratio: 1; }
 
 /* Recent trips: three random galleries */
 .recent-trips { padding-bottom: clamp(4rem, 10vw, 7rem); }

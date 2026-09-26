@@ -12,21 +12,27 @@
   }
 
   /* ---------- Featured carousel ---------- */
+  // One continuous wall of ROWS rows with straight top and bottom edges.
+  // Each folder (group) fills a stretch of every row; where one group hands
+  // over to the next, each row switches at a slightly different point, so the
+  // seam steps like the layers of a lasagna.
   const root = document.querySelector("[data-carousel]");
   if (!root) return;
   const track = root.querySelector(".carousel-track");
   const baseSet = track.querySelector(".carousel-set");
   const toggle = document.querySelector(".carousel-toggle");
   const speed = parseFloat(root.dataset.speed) || 40; // pixels per second
+  const ROWS = parseInt(root.dataset.rows, 10) || 3;
+  const STAGGER = 0.35; // how far seams may shift, as a fraction of row height
+  const GAP = 6;        // space between photos
   const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const GAP = 6; // space between photos inside a group
 
   const originals = [...baseSet.querySelectorAll(".cgroup")].filter((g) => g.querySelector("img"));
   if (!originals.length) return;
+  const allImgs = originals.flatMap((g) => [...g.querySelectorAll("img")]);
 
-  const blockSize = () =>
-    Math.round(Math.min(600, Math.max(280, window.innerHeight * 0.62), window.innerWidth * 0.86));
-
+  const wallHeight = () =>
+    Math.round(Math.min(600, Math.max(300, window.innerHeight * 0.62), window.innerWidth * 1.1));
   const ratio = (img) => (img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : 1.5);
   const whenLoaded = (img) =>
     img.complete && img.naturalWidth
@@ -35,8 +41,9 @@
           img.addEventListener("load", r, { once: true });
           img.addEventListener("error", r, { once: true });
         });
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
-  // Split items (in order) into `count` runs whose summed weights are as even as possible.
+  // Split a group's photos (in order) into ROWS runs of roughly equal width.
   function split(weights, count) {
     const total = weights.reduce((s, w) => s + w, 0);
     const runs = [];
@@ -57,53 +64,69 @@
     return runs;
   }
 
-  // Pack photos into an S x S square, as rows or as columns, whichever needs the least cropping.
-  function plan(ratios, S) {
-    let best = null;
-    for (const mode of ["rows", "cols"]) {
-      // For columns, work with height/width and swap axes at the end.
-      const w = mode === "rows" ? ratios : ratios.map((r) => 1 / r);
-      for (let n = 1; n <= w.length; n++) {
-        const runs = split(w, n);
-        const lengths = runs.map((run) => (S - GAP * (run.length - 1)) / run.reduce((s, i) => s + w[i], 0));
-        const extent = lengths.reduce((s, l) => s + l, 0) + GAP * (runs.length - 1);
-        const crop = Math.abs(Math.log(extent / S));
-        if (!best || crop < best.crop) best = { mode, w, runs, lengths, crop };
-      }
-    }
-    const { mode, w, runs, lengths } = best;
-    const room = S - GAP * (runs.length - 1);
-    const total = lengths.reduce((s, l) => s + l, 0);
-    const boxes = [];
-    let a = 0; // position along the stacking axis
-    runs.forEach((run, ri) => {
-      const thick = ri === runs.length - 1 ? S - a : Math.round((lengths[ri] * room) / total);
-      const sum = run.reduce((s, i) => s + w[i], 0);
-      const along = S - GAP * (run.length - 1);
-      let b = 0;
-      run.forEach((i, k) => {
-        const len = k === run.length - 1 ? S - b : Math.round((w[i] / sum) * along);
-        boxes[i] = mode === "rows"
-          ? { left: b, top: a, width: len, height: thick }
-          : { left: a, top: b, width: thick, height: len };
-        b += len + GAP;
-      });
-      a += thick + GAP;
+  // For each original group: which photo goes in which row, and its natural widths.
+  function measure(h) {
+    return originals.map((g) => {
+      let links = [...g.querySelectorAll("a")];
+      let ratios = links.map((a) => ratio(a.querySelector("img")));
+      // A group needs at least one photo per row; reuse photos if it's short.
+      const idx = ratios.map((_, i) => i);
+      while (idx.length < ROWS) idx.push(idx[idx.length % ratios.length]);
+      const rows = split(idx.map((i) => ratios[i]), ROWS).map((run) => run.map((k) => idx[k]));
+      const natural = rows.map((row) => row.reduce((s, i) => s + ratios[i] * h, 0) + GAP * (row.length - 1));
+      const width = natural.reduce((s, n) => s + n, 0) / ROWS;
+      return { ratios, rows, natural, width };
     });
-    return boxes;
   }
 
-  function place(group, boxes, S) {
-    const box = group.querySelector(".cgroup-box");
-    box.style.width = box.style.height = S + "px";
-    [...box.children].forEach((a, i) => {
-      const p = boxes[i];
-      if (!p) return;
-      a.style.left = p.left + "px";
-      a.style.top = p.top + "px";
-      a.style.width = p.width + "px";
-      a.style.height = p.height + "px";
+  // Position every photo in a set. `seq` lists the group elements in order,
+  // `info` their measurements. Returns the set width.
+  function layout(seq, info, H) {
+    const h = (H - GAP * (ROWS - 1)) / ROWS;
+    const maxShift = h * STAGGER;
+    // Consensus end of each group, and each row's own end, nudged within ±maxShift.
+    let consensus = 0;
+    const natural = new Array(ROWS).fill(0);
+    const ends = info.map((m, g) => {
+      consensus += (g ? GAP : 0) + m.width;
+      return m.natural.map((n, r) => {
+        natural[r] += (g ? GAP : 0) + n;
+        const nudge = [-0.5, 0.5, 0][(g + r) % 3] * maxShift;
+        return consensus + clamp(natural[r] - consensus + nudge, -maxShift, maxShift);
+      });
     });
+    const setWidth = consensus + GAP;
+    const last = ends[ends.length - 1];
+    seq.forEach((groupEl, g) => {
+      const m = info[g];
+      const links = [...groupEl.querySelectorAll("a")];
+      const used = new Set();
+      m.rows.forEach((row, r) => {
+        const start = g ? ends[g - 1][r] + GAP : last[r] - setWidth + GAP;
+        const end = ends[g][r];
+        const room = end - start - GAP * (row.length - 1);
+        const sum = row.reduce((s, i) => s + m.ratios[i], 0);
+        let x = start;
+        const y = r * (h + GAP);
+        row.forEach((i, k) => {
+          const w = k === row.length - 1 ? end - x : Math.round((m.ratios[i] / sum) * room);
+          // A photo reused to fill a short group gets a duplicate link.
+          let a = links[i];
+          if (used.has(i)) {
+            a = links[i].cloneNode(true);
+            a.classList.add("is-extra");
+            a.addEventListener("click", (e) => { e.preventDefault(); links[i].click(); });
+            groupEl.querySelector(".cgroup-box").appendChild(a);
+          }
+          used.add(i);
+          Object.assign(a.style, { left: x + "px", top: y + "px", width: w + "px", height: Math.round(h) + "px" });
+          x += w + GAP;
+        });
+      });
+    });
+    // Line up so the latest-starting row begins at the left edge.
+    const firstStarts = last.map((e) => e - setWidth + GAP);
+    return { setWidth, lead: Math.max(...firstStarts) };
   }
 
   // Copies of groups for the seamless loop; clicks go to the original photo.
@@ -122,77 +145,70 @@
     return c;
   }
 
-  let copies = new Map(); // original group -> its copies
-  let buildId = 0;
   let lastWidth = 0;
 
   function build() {
-    const S = blockSize();
-    const id = ++buildId;
     lastWidth = window.innerWidth;
-    root.style.setProperty("--block", S + "px");
-    root.style.setProperty("--stagger", Math.round(S * 0.08) + "px");
+    const H = wallHeight();
+    const h = (H - GAP * (ROWS - 1)) / ROWS;
+    root.style.setProperty("--wall", H + "px");
 
-    // Clear old copies
-    track.querySelectorAll(".is-copy, .carousel-set.copy").forEach((n) => n.remove());
-    copies = new Map(originals.map((g) => [g, []]));
+    // Reset copies from any earlier build
+    track.querySelectorAll(".is-copy, .is-extra, .carousel-set.copy").forEach((n) => n.remove());
 
+    const base = measure(h);
+    const seq = [...originals];
+    const info = [...base];
     if (!still) {
-      // Repeat the groups until one set is wider than the screen, then duplicate the set.
-      const groupGap = parseFloat(getComputedStyle(baseSet).columnGap) || 24;
-      const setWidth = originals.length * (S + groupGap);
-      let repeats = Math.max(0, Math.ceil(window.innerWidth / setWidth) - 1);
-      // Keep an even number of groups per set so the up/down stagger continues across the loop.
-      if ((originals.length * (repeats + 1)) % 2) repeats++;
-      for (let r = 0; r < repeats; r++) {
-        originals.forEach((g) => {
+      // Repeat groups until one set is comfortably wider than the screen.
+      const setWidth = () => info.reduce((s, m) => s + m.width + GAP, 0);
+      // Whole cycles only, so the same group never meets itself at the loop point.
+      while (setWidth() < window.innerWidth + h * 2) {
+        originals.forEach((g, i) => {
           const c = copyOf(g);
-          copies.get(g).push(c);
           baseSet.appendChild(c);
+          seq.push(c);
+          info.push(base[i]);
         });
       }
+    }
+
+    const { setWidth, lead } = layout(seq, info, H);
+    baseSet.style.width = setWidth + "px";
+    track.style.marginLeft = -Math.round(lead) + "px";
+
+    if (!still) {
       const second = document.createElement("div");
       second.className = "carousel-set copy";
       second.setAttribute("aria-hidden", "true");
-      [...baseSet.children].forEach((g, idx) => {
-        const orig = originals[idx % originals.length];
-        const c = copyOf(orig);
-        copies.get(orig).push(c);
+      second.style.width = setWidth + "px";
+      seq.forEach((g, i) => {
+        const c = copyOf(originals[i % originals.length]);
         second.appendChild(c);
       });
       track.appendChild(second);
-    }
-
-    originals.forEach((g) => {
-      const imgs = [...g.querySelectorAll("img")];
-      Promise.all(imgs.map(whenLoaded)).then(() => {
-        if (id !== buildId) return; // a newer resize took over
-        const boxes = plan(imgs.map(ratio), S);
-        [g, ...copies.get(g)].forEach((el) => {
-          place(el, boxes, S);
-          el.classList.add("is-laid");
-        });
-      });
-      // Give copies the right size straight away so the strip width is correct.
-      [g, ...copies.get(g)].forEach((el) => {
-        const box = el.querySelector(".cgroup-box");
-        box.style.width = box.style.height = S + "px";
-      });
-    });
-
-    if (!still) {
-      const width = baseSet.getBoundingClientRect().width;
-      track.style.setProperty("--duration", Math.round(width / speed) + "s");
+      layout([...second.children], info, H);
+      track.style.setProperty("--duration", Math.round(setWidth / speed) + "s");
     }
     root.classList.add("is-ready");
   }
 
-  build();
+  // Wait for the photos (their shapes decide the layout), but don't wait forever.
+  let built = false;
+  const ready = () => allImgs.every((img) => img.complete);
+  const all = Promise.all(allImgs.map(whenLoaded));
+  Promise.race([all, new Promise((r) => setTimeout(r, 5000))]).then(() => {
+    const complete = ready();
+    build();
+    built = true;
+    if (!complete) all.then(build); // re-flow once the slow photos arrive
+  });
+
   let t;
   window.addEventListener("resize", () => {
     clearTimeout(t);
     // Only rebuild when the width changes (phones change height while scrolling).
-    t = setTimeout(() => { if (window.innerWidth !== lastWidth) build(); }, 250);
+    t = setTimeout(() => { if (built && window.innerWidth !== lastWidth) build(); }, 250);
   });
 
   if (toggle && !still) {
