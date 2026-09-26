@@ -116,6 +116,11 @@ ul { list-style: none; margin: 0; padding: 0; }
 .instagram > .wrap > p { margin: 0 0 2rem; color: var(--muted); }
 .insta-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
 .insta-row img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+.insta-live a { display: block; overflow: hidden; background: var(--rule); }
+.insta-live img { transition: opacity 0.2s; }
+.insta-live a:hover img { opacity: 0.85; }
+.insta-live[aria-busy="true"] { min-height: 1px; }
+.insta-live li.placeholder { aspect-ratio: 1; background: var(--rule); }
 .instagram .actions { margin-top: 2.5rem; }
 
 /* ---------- About ---------- */
