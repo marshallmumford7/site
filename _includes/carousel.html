@@ -1,7 +1,7 @@
 {%- comment -%}
   Featured carousel. Each folder inside photos/home/featured/ becomes one square
-  group in the strip, labelled with the folder name ("01-yellow-birds" -> "Yellow birds").
-  Folders appear in name order, photos in filename order.
+  group in the strip. Folders appear in name order (e.g. 01-yellow-birds,
+  02-butterflies), photos in filename order.
 {%- endcomment -%}
 {%- assign root = "/photos/home/featured/" -%}
 {%- assign files = site.static_files | where_exp: "f", "f.path contains '/photos/home/featured/'" | sort: "path" -%}
@@ -11,8 +11,7 @@
   <div class="carousel-track">
     <div class="carousel-set" data-gallery>
     {%- for g in groups -%}
-      {%- assign slug = g.name | remove_first: root | remove: "/" -%}
-      <figure class="cgroup" data-label="{{ slug }}">
+      <figure class="cgroup">
         <div class="cgroup-box">
         {%- for f in g.items -%}
           {%- assign ext = f.extname | downcase -%}
@@ -21,7 +20,6 @@
           {%- endif -%}
         {%- endfor -%}
         </div>
-        <figcaption class="cgroup-label">{{ slug | replace: "-", " " | replace: "_", " " }}</figcaption>
       </figure>
     {%- endfor -%}
     </div>

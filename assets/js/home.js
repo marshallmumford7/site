@@ -21,14 +21,6 @@
   const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const GAP = 6; // space between photos inside a group
 
-  // "01-yellow-birds" -> "Yellow birds"
-  baseSet.querySelectorAll(".cgroup").forEach((g) => {
-    const cap = g.querySelector(".cgroup-label");
-    const t = (g.dataset.label || "").replace(/^\d+[-_ ]*/, "").replace(/[-_]+/g, " ").trim();
-    if (t) cap.textContent = t.charAt(0).toUpperCase() + t.slice(1);
-    else cap.remove();
-  });
-
   const originals = [...baseSet.querySelectorAll(".cgroup")].filter((g) => g.querySelector("img"));
   if (!originals.length) return;
 
@@ -139,6 +131,7 @@
     const id = ++buildId;
     lastWidth = window.innerWidth;
     root.style.setProperty("--block", S + "px");
+    root.style.setProperty("--stagger", Math.round(S * 0.08) + "px");
 
     // Clear old copies
     track.querySelectorAll(".is-copy, .carousel-set.copy").forEach((n) => n.remove());
@@ -148,7 +141,9 @@
       // Repeat the groups until one set is wider than the screen, then duplicate the set.
       const groupGap = parseFloat(getComputedStyle(baseSet).columnGap) || 24;
       const setWidth = originals.length * (S + groupGap);
-      const repeats = Math.max(0, Math.ceil(window.innerWidth / setWidth) - 1);
+      let repeats = Math.max(0, Math.ceil(window.innerWidth / setWidth) - 1);
+      // Keep an even number of groups per set so the up/down stagger continues across the loop.
+      if ((originals.length * (repeats + 1)) % 2) repeats++;
       for (let r = 0; r < repeats; r++) {
         originals.forEach((g) => {
           const c = copyOf(g);
