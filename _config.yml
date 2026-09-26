@@ -14,11 +14,13 @@ email: marshallmumford7@gmail.com
 
 # Homepage images live in folders under photos/home/:
 #   slideshow/  full-screen rotating images at the top (landscape works best)
+#   featured/   one folder per carousel group, e.g. featured/01-yellow-birds/
 #   mosaic/     the photo wall further down (8 or 12 looks best)
 #   instagram/  optional row of 6 above the Instagram link
 #   portrait.jpg  photo of you for the About page
 # Used for link previews when shared on social media:
 hero_image: /photos/home/slideshow/01.jpg
+carousel_speed: 40   # featured carousel speed, in pixels per second
 
 # Each file in _galleries/ becomes a page at the same URL as the old Google Site
 collections:

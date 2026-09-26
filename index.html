@@ -19,11 +19,16 @@ body_class: home
   </p>
 </section>
 
-<section class="wrap featured-work">
+<section class="featured-work">
   <h2 class="section-title">Featured work</h2>
+  {% include carousel.html %}
+</section>
+
+<section class="wrap recent-trips">
+  <h2 class="section-title">Recent trips</h2>
   {% assign recent = site.galleries | where: "recent", true | sort: "recent_order" %}
-  <ul class="tiles">
-    {% for g in recent limit: 6 %}{% include tile.html gallery=g %}{% endfor %}
+  <ul class="tiles recent-tiles" data-shuffle>
+    {% for g in recent %}{% include tile.html gallery=g %}{% endfor %}
   </ul>
   <p class="actions"><a class="button button-quiet" href="{{ '/home/trips/' | relative_url }}">See all trips</a></p>
 </section>

@@ -1,0 +1,33 @@
+{%- comment -%}
+  Featured carousel. Each folder inside photos/home/featured/ becomes one square
+  group in the strip, labelled with the folder name ("01-yellow-birds" -> "Yellow birds").
+  Folders appear in name order, photos in filename order.
+{%- endcomment -%}
+{%- assign root = "/photos/home/featured/" -%}
+{%- assign files = site.static_files | where_exp: "f", "f.path contains '/photos/home/featured/'" | sort: "path" -%}
+{%- assign groups = files | group_by_exp: "f", "f.path | remove: f.name" -%}
+{%- if groups.size > 0 -%}
+<div class="carousel" data-carousel data-speed="{{ site.carousel_speed | default: 40 }}">
+  <div class="carousel-track">
+    <div class="carousel-set" data-gallery>
+    {%- for g in groups -%}
+      {%- assign slug = g.name | remove_first: root | remove: "/" -%}
+      <figure class="cgroup" data-label="{{ slug }}">
+        <div class="cgroup-box">
+        {%- for f in g.items -%}
+          {%- assign ext = f.extname | downcase -%}
+          {%- if ext == ".jpg" or ext == ".jpeg" or ext == ".png" or ext == ".webp" or ext == ".avif" -%}
+          <a class="photo" href="{{ f.path | relative_url }}"><img src="{{ f.path | relative_url }}" alt="Photograph by Marshall Mumford" decoding="async"></a>
+          {%- endif -%}
+        {%- endfor -%}
+        </div>
+        <figcaption class="cgroup-label">{{ slug | replace: "-", " " | replace: "_", " " }}</figcaption>
+      </figure>
+    {%- endfor -%}
+    </div>
+  </div>
+</div>
+<div class="wrap carousel-controls">
+  <button class="carousel-toggle" type="button" aria-pressed="false" hidden>Pause</button>
+</div>
+{%- endif -%}

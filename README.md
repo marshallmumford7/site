@@ -10,6 +10,7 @@ Drop exported JPEGs into the matching folder and push. That's it.
 | Page | Folder |
 | --- | --- |
 | Homepage slideshow (rotates every 6 s) | `photos/home/slideshow/` (landscape shots, 3–6 is plenty) |
+| Homepage featured carousel | one folder per group in `photos/home/featured/`, e.g. `01-yellow-birds/` (label = folder name, number sets the order) |
 | Homepage photo wall | `photos/home/mosaic/` (use 5, 10 or 15 photos so the pattern fills evenly) |
 | Homepage Instagram row | `photos/home/instagram/` (first 6 are shown) |
 | About page portrait | `photos/home/portrait.jpg` |
@@ -36,7 +37,7 @@ section: trips
 order: 1                 # position on the Trips page
 location: Juneau, Alaska # optional. US: City, State. Elsewhere: Place, Country
 year: 2024               # optional
-recent: true             # show on the homepage under "Featured work" (first 6)
+recent: true             # eligible for the 3 random "Recent trips" on the homepage
 recent_order: 6          # position in that homepage list
 captions:                # optional, shown in the full-screen viewer
   01.jpg: Brown bear fishing at Brooks Falls

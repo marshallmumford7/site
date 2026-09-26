@@ -98,7 +98,34 @@ ul { list-style: none; margin: 0; padding: 0; }
 .intro .actions { margin-top: 2.25rem; }
 
 .featured-work { padding-bottom: clamp(4rem, 10vw, 7rem); }
-.featured-work .tiles { grid-template-columns: repeat(3, 1fr); }
+
+/* Featured carousel */
+.carousel { --group-gap: clamp(1.25rem, 3vw, 2.5rem); overflow: hidden; }
+.carousel-track { display: flex; width: max-content; }
+.carousel-set { display: flex; align-items: flex-start; column-gap: var(--group-gap); padding-right: var(--group-gap); }
+.cgroup { flex: none; margin: 0; }
+.cgroup-box { position: relative; width: var(--block, 480px); height: var(--block, 480px); transition: opacity 0.6s ease; }
+.cgroup-box a { position: absolute; display: block; overflow: hidden; background: var(--tile-bg); cursor: zoom-in; }
+.cgroup-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.cgroup-box a:hover img { transform: scale(1.04); }
+.cgroup-label { margin-top: 0.8rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.js .carousel:not(.is-ready) { opacity: 0; }
+.js .cgroup:not(.is-laid) .cgroup-box { opacity: 0; }
+.carousel.is-ready .carousel-track { animation: carousel-scroll var(--duration, 60s) linear infinite; }
+.carousel:hover .carousel-track, .carousel:focus-within .carousel-track, .carousel.is-paused .carousel-track { animation-play-state: paused; }
+@keyframes carousel-scroll { to { transform: translateX(-50%); } }
+.carousel-controls { display: flex; justify-content: flex-end; margin-top: 0.75rem; }
+.carousel-toggle { border: 0; background: none; padding: 0.25rem 0; font: 500 0.72rem/1 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); border-bottom: 2px solid var(--teal); cursor: pointer; }
+.carousel-toggle:hover { color: var(--accent); }
+/* Without JavaScript: simple grids you can scroll sideways */
+html:not(.js) .carousel { overflow-x: auto; }
+html:not(.js) .cgroup-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; height: auto; }
+html:not(.js) .cgroup-box a { position: static; aspect-ratio: 1; }
+
+/* Recent trips: three random galleries */
+.recent-trips { padding-bottom: clamp(4rem, 10vw, 7rem); }
+.recent-trips .recent-tiles { grid-template-columns: repeat(3, 1fr); }
+.recent-tiles .tile:nth-child(n + 4) { display: none; }
 
 .mosaic { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-flow: dense; gap: 4px; }
 .mosaic li:nth-child(5n + 1) { grid-column: span 2; grid-row: span 2; }
@@ -192,7 +219,9 @@ ul { list-style: none; margin: 0; padding: 0; }
   .hero { height: calc(100svh - 8rem); }
   .mosaic { grid-template-columns: repeat(2, 1fr); }
   .mosaic li:nth-child(10n + 6) { grid-column: span 2; }
-  .featured-work .tiles { grid-template-columns: repeat(2, 1fr); gap: 2rem 1rem; }
+  .recent-tiles { grid-template-columns: repeat(2, 1fr); gap: 2rem 1rem; }
+  .recent-tiles .tile:first-child { grid-column: 1 / -1; }
+  .recent-tiles .tile:first-child .tile-img { aspect-ratio: 3 / 2; }
   .insta-row { grid-template-columns: repeat(3, 1fr); }
   .about.has-portrait { grid-template-columns: 1fr; }
 }
@@ -204,6 +233,8 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   .tile-img img, .slide { transition: none; }
+  .carousel { overflow-x: auto; }
+  .carousel.is-ready .carousel-track { animation: none; }
 }
 .lb-btn[hidden] { display: none; }
 
