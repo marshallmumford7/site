@@ -9,8 +9,8 @@ url: "https://www.mrm.photography"
 instagram: https://www.instagram.com/marshallwildlife/
 ebird: https://media.ebird.org/catalog?userId=USER3002818
 instagram_handle: marshallwildlife
-behold_feed_id:   # paste your Behold JSON feed ID here to show your latest Instagram posts
-email:            # add your email to show an "Email me" button, e.g. you@example.com
+behold_feed_id: WTral7M2ZX7cnkvGdQjQ
+email: marshallmumford7@gmail.com
 
 # Homepage images live in folders under photos/home/:
 #   slideshow/  full-screen rotating images at the top (landscape works best)
