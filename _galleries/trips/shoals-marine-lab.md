@@ -2,7 +2,6 @@
 title: Shoals Marine Lab
 folder: trips/shoals-marine-lab
 section: trips
-key: shoals-marine-lab
 order: 1
 back_url: /home/trips/
 back_title: Trips

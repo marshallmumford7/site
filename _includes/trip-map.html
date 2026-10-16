@@ -1,0 +1,36 @@
+{%- comment -%}
+  Map of trips. Pins come from _data/map.yml. Use {% include trip-map.html %}
+  anywhere; add compact=true for a shorter version (e.g. on the homepage).
+{%- endcomment -%}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="{{ '/assets/css/map.css' | relative_url }}">
+<div class="trip-map{% if include.compact %} trip-map-compact{% endif %}" data-trip-map role="region" aria-label="Map of places Marshall has photographed"></div>
+<script type="application/json" class="trip-map-data">[
+{%- assign first = true -%}
+{%- assign sorted = site.galleries | sort: "order" -%}
+{%- for g in sorted -%}
+  {%- assign p = site.data.map[g.slug] -%}
+  {%- if p and p.size == 2 -%}
+    {%- assign cover = "" -%}
+    {%- if g.cover -%}
+      {%- assign cover = g.cover | relative_url -%}
+    {%- else -%}
+      {%- assign prefix = "/photos/" | append: g.folder | append: "/" -%}
+      {%- assign files = site.static_files | sort: "path" -%}
+      {%- for f in files -%}
+        {%- assign dir = f.path | remove: f.name -%}
+        {%- if dir == prefix -%}
+          {%- assign ext = f.extname | downcase -%}
+          {%- if ext == ".jpg" or ext == ".jpeg" or ext == ".png" or ext == ".webp" or ext == ".avif" -%}
+            {%- assign cover = f.path | relative_url -%}{%- break -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+    {%- unless first -%},{%- endunless -%}{%- assign first = false %}
+  {"title": {{ g.title | jsonify }}, "url": {{ g.url | relative_url | jsonify }}, "location": {{ g.location | default: "" | jsonify }}, "lat": {{ p[0] }}, "lng": {{ p[1] }}, "cover": {{ cover | jsonify }}}
+  {%- endif -%}
+{%- endfor %}
+]</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
+<script src="{{ '/assets/js/map.js' | relative_url }}" defer></script>
