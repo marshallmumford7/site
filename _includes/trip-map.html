@@ -4,7 +4,7 @@
 {%- endcomment -%}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="{{ '/assets/css/map.css' | relative_url }}">
-<div class="trip-map{% if include.compact %} trip-map-compact{% endif %}" data-trip-map role="region" aria-label="Map of places Marshall has photographed"></div>
+<div class="trip-map{% if include.compact %} trip-map-compact{% endif %}" data-trip-map data-carto-key="{{ site.carto_key }}" role="region" aria-label="Map of places Marshall has photographed"></div>
 <script type="application/json" class="trip-map-data">[
 {%- assign first = true -%}
 {%- assign sorted = site.galleries | sort: "order" -%}

@@ -13,3 +13,5 @@
 .trip-popup img { flex: none; width: 64px; height: 48px; object-fit: cover; background: #eef3f5; }
 .trip-popup strong { display: block; font: 400 1rem/1.25 var(--serif); }
 .trip-popup small { display: block; margin-top: 0.1rem; font-size: 0.78rem; color: #6b6f70; }
+/* Softens bright OpenStreetMap tiles in dark mode (only used without a CARTO key) */
+.trip-map-dim .leaflet-tile-pane { filter: brightness(0.75) contrast(1.05) saturate(0.8); }

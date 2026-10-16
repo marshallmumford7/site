@@ -20,11 +20,20 @@
   const ring = css.getPropertyValue("--paper").trim() || "#fff";
 
   const map = L.map(el, { scrollWheelZoom: false, worldCopyJump: true, zoomSnap: 0.5 });
-  L.tileLayer(`https://{s}.basemaps.cartocdn.com/${dark ? "dark_all" : "light_all"}/{z}/{x}/{y}{r}.png`, {
-    subdomains: "abcd",
-    maxZoom: 18,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-  }).addTo(map);
+  // CARTO's clean basemap needs a free key (carto_key in _config.yml).
+  // Without one, fall back to standard OpenStreetMap tiles, which need no key.
+  const key = (el.dataset.cartoKey || "").trim();
+  const osm = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+  if (key) {
+    L.tileLayer(`https://{s}.basemaps.cartocdn.com/${dark ? "dark_all" : "light_all"}/{z}/{x}/{y}{r}.png?key=${encodeURIComponent(key)}`, {
+      subdomains: "abcd",
+      maxZoom: 18,
+      attribution: `${osm} &copy; <a href="https://carto.com/attributions">CARTO</a>`,
+    }).addTo(map);
+  } else {
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 18, attribution: osm }).addTo(map);
+    if (dark) el.classList.add("trip-map-dim");
+  }
 
   // Scroll-to-zoom only after the visitor clicks the map, so the page scrolls normally.
   map.on("click", () => map.scrollWheelZoom.enable());
