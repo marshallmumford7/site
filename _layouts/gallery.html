@@ -1,30 +1,68 @@
 ---
 layout: default
 ---
-<article class="gallery">
-  <header class="wrap gallery-head">
-    {% if page.back_url %}<p class="crumb"><a href="{{ page.back_url | relative_url }}">{{ page.back_title }}</a></p>{% endif %}
-    <h1>{{ page.title }}</h1>
-    {% if page.location %}<p class="meta">{{ page.location }}</p>{% endif %}
-    {% if page.year %}<p class="meta meta-year">{{ page.year }}</p>{% endif %}
-    {% assign notes = content | strip %}
-    {% if notes != "" %}<div class="notes">{{ content }}</div>{% endif %}
+<link rel="stylesheet" href="{{ '/assets/css/trip.css' | relative_url }}">
+{%- capture cover -%}{% include cover-url.html gallery=page %}{%- endcapture -%}
+{%- assign cover = cover | strip -%}
+
+<article class="trip">
+  <header class="trip-hero{% if cover == '' %} trip-hero-plain{% endif %}">
+    {% if cover != "" %}<img class="trip-hero-img" src="{{ cover }}" alt="" fetchpriority="high">{% endif %}
+    <div class="wrap trip-hero-text">
+      <p class="crumb"><a href="{{ page.back_url | default: '/home/trips/' | relative_url }}">{{ page.back_title | default: "Trips" }}</a></p>
+      <h1>{{ page.title }}</h1>
+      {% if page.location or page.year %}
+      <p class="trip-meta">{{ page.location }}{% if page.location and page.year %}<span aria-hidden="true"> · </span>{% endif %}{{ page.year }}</p>
+      {% endif %}
+    </div>
   </header>
 
-  {% if page.key %}
-    {% assign subs = site.galleries | where: "section", page.key | sort: "order" %}
-    {% if subs.size > 0 %}
-    <ul class="wrap tiles tiles-small">
-      {% for g in subs %}{% include tile.html gallery=g %}{% endfor %}
-    </ul>
-    {% endif %}
-  {% endif %}
+  {% assign notes = content | strip %}
+  {% if notes != "" %}<div class="wrap trip-notes">{{ content }}</div>{% endif %}
 
-  <div class="wrap wrap-wide">
-    {% if page.key %}
-      {% include photos.html folder=page.folder captions=page.captions alt=page.title show_empty=false %}
-    {% else %}
-      {% include photos.html folder=page.folder captions=page.captions alt=page.title show_empty=true %}
-    {% endif %}
+  {%- assign prefix = "/photos/" | append: page.folder | append: "/" -%}
+  {%- assign files = site.static_files | sort: "path" -%}
+  {%- assign count = 0 -%}
+  <div class="wrap wrap-wide trip-photos">
+    <ul class="justified" data-justify data-gallery>
+    {%- for f in files -%}
+      {%- assign dir = f.path | remove: f.name -%}
+      {%- if dir == prefix -%}
+        {%- assign ext = f.extname | downcase -%}
+        {%- if ext == ".jpg" or ext == ".jpeg" or ext == ".png" or ext == ".webp" or ext == ".avif" -%}
+          {%- assign count = count | plus: 1 -%}
+          {%- assign caption = page.captions[f.name] -%}
+      <li{% if page.featured contains f.name %} class="is-featured"{% endif %}><a class="photo" href="{{ f.path | relative_url }}"{% if caption %} data-caption="{{ caption | escape }}"{% endif %}><img src="{{ f.path | relative_url }}" alt="{{ caption | default: page.title | escape }}" decoding="async"></a></li>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor %}
+    </ul>
+    {% if count == 0 %}<p class="empty">No photos here yet. Add images to <code>photos/{{ page.folder }}/</code> and they'll appear automatically.</p>{% endif %}
   </div>
+
+  {%- assign trips = site.galleries | where: "section", "trips" | sort: "order" -%}
+  {%- assign idx = -1 -%}
+  {%- for t in trips -%}{%- if t.url == page.url -%}{%- assign idx = forloop.index0 -%}{%- break -%}{%- endif -%}{%- endfor -%}
+  {%- if idx >= 0 and trips.size > 1 -%}
+    {%- assign last = trips.size | minus: 1 -%}
+    {%- if idx == 0 -%}{%- assign pi = last -%}{%- else -%}{%- assign pi = idx | minus: 1 -%}{%- endif -%}
+    {%- if idx == last -%}{%- assign ni = 0 -%}{%- else -%}{%- assign ni = idx | plus: 1 -%}{%- endif -%}
+    {%- assign prev = trips[pi] -%}{%- assign next = trips[ni] -%}
+    {%- capture prev_cover -%}{% include cover-url.html gallery=prev %}{%- endcapture -%}
+    {%- capture next_cover -%}{% include cover-url.html gallery=next %}{%- endcapture -%}
+  <nav class="wrap trip-nav" aria-label="More trips">
+    <a class="trip-nav-link" href="{{ prev.url | relative_url }}" rel="prev">
+      <span class="trip-nav-img">{% assign pc = prev_cover | strip %}{% if pc != "" %}<img src="{{ pc }}" alt="" loading="lazy" decoding="async">{% endif %}</span>
+      <span class="trip-nav-label">&lsaquo; Previous trip</span>
+      <span class="trip-nav-title">{{ prev.title }}</span>
+    </a>
+    <a class="trip-nav-link trip-nav-next" href="{{ next.url | relative_url }}" rel="next">
+      <span class="trip-nav-img">{% assign nc = next_cover | strip %}{% if nc != "" %}<img src="{{ nc }}" alt="" loading="lazy" decoding="async">{% endif %}</span>
+      <span class="trip-nav-label">Next trip &rsaquo;</span>
+      <span class="trip-nav-title">{{ next.title }}</span>
+    </a>
+  </nav>
+  <p class="actions"><a class="button button-quiet" href="{{ '/home/trips/' | relative_url }}">All trips</a></p>
+  {%- endif -%}
 </article>
+<script src="{{ '/assets/js/justify.js' | relative_url }}" defer></script>

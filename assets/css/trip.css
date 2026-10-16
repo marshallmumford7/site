@@ -1,0 +1,63 @@
+/* ---------- Trip pages: banner, justified photos, next/previous ---------- */
+
+/* Cover banner */
+.trip-hero { position: relative; height: min(72vh, 760px); min-height: 22rem; background: #22302d; color: #fff; overflow: hidden; }
+.trip-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.trip-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.15) 45%, rgba(0,0,0,0) 70%); }
+.trip-hero-text { position: absolute; left: 0; right: 0; bottom: clamp(1.75rem, 6vh, 3.5rem); margin-inline: auto; z-index: 1; }
+.trip-hero h1 { color: #fff; font-size: clamp(2.8rem, 8vw, 6rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1; }
+.trip-hero .crumb { margin: 0 0 0.9rem; }
+.trip-hero .crumb a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; }
+.trip-hero .crumb a::before { content: "\2039\00a0"; }
+.trip-hero .crumb a:hover { color: #fff; }
+.trip-meta { margin: 0.9rem 0 0; font-size: clamp(1rem, 1.6vw, 1.15rem); color: rgba(255,255,255,0.9); }
+.trip-meta::before { content: ""; display: block; width: 3rem; height: 3px; margin-bottom: 0.9rem; background: var(--teal); border-radius: 2px; }
+
+/* No photos yet: a plain header instead of a banner */
+.trip-hero-plain { height: auto; min-height: 0; background: none; color: var(--ink); padding-top: clamp(2.5rem, 7vw, 4.5rem); }
+.trip-hero-plain::after { content: none; }
+.trip-hero-plain .trip-hero-text { position: static; }
+.trip-hero-plain h1 { color: var(--ink); }
+.trip-hero-plain .crumb a, .trip-hero-plain .trip-meta { color: var(--muted); }
+
+.trip-notes { max-width: calc(38rem + 2 * var(--gutter)); margin-top: clamp(2.5rem, 6vw, 4rem); text-align: center; font-family: var(--serif); font-size: 1.2rem; line-height: 1.7; color: var(--muted); }
+.trip-notes p { margin: 0 0 1em; }
+.trip-photos { margin-top: clamp(2rem, 5vw, 3.5rem); }
+
+/* Justified rows (sizes set by assets/js/justify.js) */
+.justified { display: flex; flex-wrap: wrap; gap: 6px; }
+.justified li { flex: none; }
+.justified .photo { display: block; width: 100%; height: 100%; overflow: hidden; background: var(--tile-bg); }
+.justified img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+.justified .photo:hover img { transform: scale(1.02); }
+.justified li.is-featured .photo { background: transparent; }
+.justified li.is-featured img { object-fit: contain; }
+.justified li.is-featured .photo:hover img { transform: none; }
+.js .justified { opacity: 0; transition: opacity 0.5s ease; }
+.js .justified.is-ready { opacity: 1; }
+/* Without JavaScript: simple columns */
+html:not(.js) .justified { display: block; columns: 3 18rem; column-gap: 6px; }
+html:not(.js) .justified li { break-inside: avoid; margin-bottom: 6px; }
+
+/* Next / previous trip */
+.trip-nav { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); margin-top: clamp(4rem, 10vw, 6.5rem); }
+.trip-nav-link { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: #22302d; color: #fff; text-decoration: none; }
+.trip-nav-img, .trip-nav-img img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.trip-nav-img img { object-fit: cover; transition: transform 0.6s ease; }
+.trip-nav-link::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0) 60%); }
+.trip-nav-link:hover .trip-nav-img img { transform: scale(1.04); }
+.trip-nav-label, .trip-nav-title { position: absolute; left: 1.25rem; right: 1.25rem; z-index: 1; }
+.trip-nav-label { bottom: 3.6rem; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.85); }
+.trip-nav-title { bottom: 1.1rem; font-family: var(--serif); font-size: clamp(1.4rem, 2.6vw, 2rem); font-weight: 300; line-height: 1.1; }
+.trip-nav-next .trip-nav-label, .trip-nav-next .trip-nav-title { text-align: right; }
+.trip-nav-link:hover, .trip-nav-link:hover .trip-nav-title { color: #fff; }
+.trip .actions { margin-top: 2rem; }
+
+@media (max-width: 640px) {
+  .trip-hero { height: 60svh; }
+  .trip-nav { grid-template-columns: 1fr; gap: 1rem; }
+  .trip-nav-link { aspect-ratio: 2 / 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .justified img, .trip-nav-img img { transition: none; }
+}

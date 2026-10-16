@@ -1,0 +1,13 @@
+{%- comment -%}Outputs the cover image URL for gallery=g: its cover setting, else the first photo in its folder.{%- endcomment -%}
+{%- assign cg = include.gallery -%}
+{%- if cg.cover -%}{{ cg.cover | relative_url }}{%- else -%}
+  {%- assign cprefix = "/photos/" | append: cg.folder | append: "/" -%}
+  {%- assign cfiles = site.static_files | sort: "path" -%}
+  {%- for f in cfiles -%}
+    {%- assign cdir = f.path | remove: f.name -%}
+    {%- if cdir == cprefix -%}
+      {%- assign cext = f.extname | downcase -%}
+      {%- if cext == ".jpg" or cext == ".jpeg" or cext == ".png" or cext == ".webp" or cext == ".avif" -%}{{ f.path | relative_url }}{%- break -%}{%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
