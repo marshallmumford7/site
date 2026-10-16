@@ -2,7 +2,8 @@
 
 /* Cover banner */
 .trip-hero { position: relative; height: min(72vh, 760px); min-height: 22rem; background: #22302d; color: #fff; overflow: hidden; }
-.trip-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.trip-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  filter: blur(var(--hero-blur, 10px)); transform: scale(1.1); /* scale hides the soft edges blur creates */ }
 .trip-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.15) 45%, rgba(0,0,0,0) 70%); }
 .trip-hero-text { position: absolute; left: 0; right: 0; bottom: clamp(1.75rem, 6vh, 3.5rem); margin-inline: auto; z-index: 1; }
 .trip-hero h1 { color: #fff; font-size: clamp(2.8rem, 8vw, 6rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1; }
