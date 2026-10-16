@@ -1,0 +1,14 @@
+{%- comment -%}
+  Sets `sorted_trips`: trips with a date, newest first, then undated trips
+  in their `order`. Undated trips have the 1900-01-01 default from _config.yml.
+{%- endcomment -%}
+{%- assign st_dated = "" | split: "" -%}
+{%- assign st_undated = "" | split: "" -%}
+{%- assign st_all = site.galleries | where: "section", "trips" -%}
+{%- for t in st_all -%}
+  {%- assign st_year = t.date | date: "%Y" | plus: 0 -%}
+  {%- if st_year > 1900 -%}{%- assign st_dated = st_dated | push: t -%}{%- else -%}{%- assign st_undated = st_undated | push: t -%}{%- endif -%}
+{%- endfor -%}
+{%- assign st_dated = st_dated | sort: "date" | reverse -%}
+{%- assign st_undated = st_undated | sort: "order" -%}
+{%- assign sorted_trips = st_dated | concat: st_undated -%}

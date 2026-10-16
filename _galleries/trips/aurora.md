@@ -7,7 +7,8 @@ back_url: /home/trips/
 back_title: Trips
 location: Ithaca, New York
 year: 2024
-# cover: /photos/trips/aurora/your-favorite.jpg
+date: 2024-10-11
+cover: /photos/trips/aurora/unnamed(4).jpg
 # captions:
 #   01.jpg: Describe the photo here
 ---

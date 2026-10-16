@@ -7,7 +7,8 @@ back_url: /home/trips/
 back_title: Trips
 location: Appledore Island, Maine
 year: 2024
-# cover: /photos/trips/shoals-marine-mammal-biology/your-favorite.jpg
+date: 2024-06-13
+cover: /photos/trips/shoals-marine-mammal-biology/unnamed.jpg
 # captions:
 #   01.jpg: Describe the photo here
 ---

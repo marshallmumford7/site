@@ -7,7 +7,8 @@ back_url: /home/trips/
 back_title: Trips
 location: Ithaca, New York
 year: 2023
-# cover: /photos/trips/cornell-fashion-collective-2023/your-favorite.jpg
+date: 2023-04-20
+cover: /photos/trips/cornell-fashion-collective-2023/unnamed(1).jpg
 # captions:
 #   01.jpg: Describe the photo here
 ---

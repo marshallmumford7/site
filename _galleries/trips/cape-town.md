@@ -6,9 +6,10 @@ order: 2.5
 back_url: /home/trips/
 back_title: Trips
 location: Cape Town, South Africa
-year:
-# recent: true
-# cover: /photos/trips/cape-town/your-favorite.jpg
+year: 2025
+date: 2025-05-04
+recent: true
+cover: /photos/trips/cape-town/unnamed(89).jpg
 # captions:
 #   01.jpg: Describe the photo here
 ---

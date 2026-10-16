@@ -11,8 +11,11 @@ layout: default
     <div class="wrap trip-hero-text">
       <p class="crumb"><a href="{{ page.back_url | default: '/home/trips/' | relative_url }}">{{ page.back_title | default: "Trips" }}</a></p>
       <h1>{{ page.title }}</h1>
-      {% if page.location or page.year %}
-      <p class="trip-meta">{{ page.location }}{% if page.location and page.year %}<span aria-hidden="true"> · </span>{% endif %}{{ page.year }}</p>
+      {%- assign when = page.year -%}
+      {%- assign dyear = page.date | date: "%Y" -%}
+      {%- if when == nil or when == "" -%}{%- if dyear != "1900" -%}{%- assign when = page.date | date: "%B %Y" -%}{%- endif -%}{%- endif -%}
+      {% if page.location or when %}
+      <p class="trip-meta">{{ page.location }}{% if page.location and when %}<span aria-hidden="true"> · </span>{% endif %}{{ when }}</p>
       {% endif %}
     </div>
   </header>
@@ -40,7 +43,8 @@ layout: default
     {% if count == 0 %}<p class="empty">No photos here yet. Add images to <code>photos/{{ page.folder }}/</code> and they'll appear automatically.</p>{% endif %}
   </div>
 
-  {%- assign trips = site.galleries | where: "section", "trips" | sort: "order" -%}
+  {%- include sorted-trips.html -%}
+  {%- assign trips = sorted_trips -%}
   {%- assign idx = -1 -%}
   {%- for t in trips -%}{%- if t.url == page.url -%}{%- assign idx = forloop.index0 -%}{%- break -%}{%- endif -%}{%- endfor -%}
   {%- if idx >= 0 and trips.size > 1 -%}

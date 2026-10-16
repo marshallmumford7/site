@@ -7,7 +7,8 @@ back_url: /home/trips/
 back_title: Trips
 location: Offshore, Maryland
 year: 2025
-# cover: /photos/trips/washington-canyon/your-favorite.jpg
+date: 2025-08-15
+cover: /photos/trips/washington-canyon/unnamed(3).jpg
 # captions:
 #   01.jpg: Describe the photo here
 ---

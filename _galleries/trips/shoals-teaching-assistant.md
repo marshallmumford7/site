@@ -7,7 +7,8 @@ back_url: /home/trips/
 back_title: Trips
 location: Appledore Island, Maine
 year: 2026
-# cover: /photos/trips/shoals-teaching-assistant/your-favorite.jpg
+date: 2026-08-14
+cover: /photos/trips/shoals-teaching-assistant/unnamed(12).jpg
 # captions:
 #   01.jpg: Describe the photo here
 ---
