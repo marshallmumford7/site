@@ -9,8 +9,8 @@
   // Trips at the same spot share one pin.
   const places = new Map();
   trips.forEach((t) => {
-    const key = `${(+t.lat).toFixed(3)},${(+t.lng).toFixed(3)}`;
-    if (!places.has(key)) places.set(key, { lat: +t.lat, lng: +t.lng, trips: [] });
+    const key = t.group ? `group:${t.group}` : `${(+t.lat).toFixed(3)},${(+t.lng).toFixed(3)}`;
+    if (!places.has(key)) places.set(key, { lat: +t.lat, lng: +t.lng, name: t.group || "", trips: [] });
     places.get(key).trips.push(t);
   });
 
@@ -42,6 +42,12 @@
   function popup(place) {
     const box = document.createElement("div");
     box.className = "trip-popup";
+    if (place.name) {
+      const h = document.createElement("p");
+      h.className = "trip-popup-head";
+      h.textContent = place.name;
+      box.appendChild(h);
+    }
     const list = document.createElement("ul");
     place.trips.forEach((t) => {
       const li = document.createElement("li");
@@ -81,7 +87,8 @@
       fillColor: teal,
       fillOpacity: 1,
     }).addTo(map);
-    marker.bindTooltip(n === 1 ? place.trips[0].title : `${place.trips[0].location || place.trips[0].title} · ${n} trips`, { direction: "top", offset: [0, -8] });
+    const label = place.name || (n === 1 ? place.trips[0].title : place.trips[0].location || place.trips[0].title);
+    marker.bindTooltip(n === 1 && !place.name ? label : `${label} \u00b7 ${n} trip${n === 1 ? "" : "s"}`, { direction: "top", offset: [0, -8] });
     marker.bindPopup(popup(place), { maxWidth: 280, minWidth: 220 });
     marker.on("mouseover", () => marker.setStyle({ fillColor: css.getPropertyValue("--accent").trim() || teal }));
     marker.on("mouseout", () => marker.setStyle({ fillColor: teal }));

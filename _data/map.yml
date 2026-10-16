@@ -21,3 +21,15 @@ washington-canyon:      [37.4347, -74.4726]
 florida:                [27.9309, -81.1246]
 aurora:                 [42.4534, -76.4735]
 brians-birding-bonanza: [45.5840, -78.3580]
+cape-town:              [-33.9249, 18.4241]   # Cape Town, South Africa
+
+
+groups:
+  delmarva:
+    name: Delmarva
+    coords: [38.55, -75.30]
+    trips:
+      - assateague
+      - prime-hook
+      - washington-canyon
+      - cape-may
