@@ -6,7 +6,7 @@ order: 20
 back_url: /home/trips/
 back_title: Trips
 location: Newfoundland, Canada
-date: 2025-10-01
+date: 2026-10-01
 recent: true
 cover: /photos/trips/newfoundland/unnamed.jpg
 # featured: [04.jpg]
