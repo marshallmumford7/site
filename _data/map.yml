@@ -15,11 +15,9 @@ cfc-behind-the-scenes:           [42.4534, -76.4735]
 cape-may:                     [38.9351, -74.9060]
 prime-hook:                   [38.8400, -75.2600]   # Prime Hook NWR, near Milton, Delaware
 assateague:                   [38.2000, -75.1500]   # Maryland side; adjust if you were in Virginia
-
-# Fill these in (remove the # at the start of the line):
-# alaska:                 [lat, lng]
-# patagonia:              [lat, lng]
-# washington-canyon:      [lat, lng]
-# florida:                [lat, lng]
-# aurora:                 [lat, lng]
-# brians-birding-bonanza: [lat, lng]
+alaska:                 [60.225457, -148.190543]
+patagonia:              [-45.149714, -66.511092]
+washington-canyon:      [37.443520, -74.500850]
+florida:                [27.931510, -81.125019]
+aurora:                 [42.490809, -76.553779]
+brians-birding-bonanza: [45.595249, -78.311490]

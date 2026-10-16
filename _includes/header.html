@@ -2,6 +2,7 @@
   <nav class="wrap header-inner" aria-label="Main">
     <ul class="nav-left">
       <li><a href="{{ '/home/trips/' | relative_url }}"{% if page.url contains '/home/trips/' %} aria-current="page"{% endif %}>Trips</a></li>
+      <li><a href="{{ '/map/' | relative_url }}"{% if page.url == '/map/' %} aria-current="page"{% endif %}>Map</a></li>
       <li><a href="{{ '/about/' | relative_url }}"{% if page.url == '/about/' %} aria-current="page"{% endif %}>About</a></li>
     </ul>
     <a class="wordmark" href="{{ '/' | relative_url }}"><img src="{{ '/assets/img/logo.png' | relative_url }}" alt="Marshall Mumford" width="1242" height="176"></a>
