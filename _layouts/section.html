@@ -8,23 +8,7 @@ layout: default
     {% if intro != "" %}<div class="notes">{{ content }}</div>{% endif %}
   </header>
   {% include sorted-trips.html %}
-  {%- comment -%} Trips grouped under year headings, newest first {%- endcomment -%}
-  {%- assign current = "" -%}
-  {%- for g in sorted_trips -%}
-    {%- assign y = g.date | date: "%Y" -%}
-    {%- if y == "1900" -%}{%- assign y = "Earlier" -%}{%- endif -%}
-    {%- if y != current -%}
-      {%- unless forloop.first %}</ul>{% endunless %}
-      {%- if st_dated.size > 0 %}<h2 class="year-head">{{ y }}</h2>{% endif %}
-  <ul class="tiles year-tiles">
-      {%- assign current = y -%}
-    {%- endif %}
-    {% include tile.html gallery=g %}
-    {%- if forloop.last %}</ul>{% endif -%}
-  {%- endfor %}
+  <ul class="tiles">
+    {% for g in sorted_trips %}{% include tile.html gallery=g %}{% endfor %}
+  </ul>
 </section>
-<style>
-  .year-head { display: flex; align-items: center; gap: 1rem; margin: clamp(3rem, 7vw, 4.5rem) 0 1.75rem; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 300; }
-  .year-head::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
-  .year-head:first-of-type { margin-top: 0; }
-</style>
