@@ -1,5 +1,5 @@
 ---
-title: Chincoteague
+title: Chincoteague Island
 folder: trips/chincoteague
 section: trips
 order: 20
