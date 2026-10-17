@@ -1,33 +1,45 @@
 // Draws the trip map from the JSON next to [data-trip-map]. Needs Leaflet.
+// Groups (from _data/map.yml) show as one pin when zoomed out and split into
+// their members at split_zoom. A group can list another group's key among its
+// trips, so groups can nest (e.g. Cornell > Cornell Fashion Collective).
 (() => {
   const el = document.querySelector("[data-trip-map]");
   if (!el || !window.L) return;
-  let trips = [];
-  try { trips = JSON.parse(el.nextElementSibling.textContent); } catch (e) { return; }
-  if (!trips.length) { el.remove(); return; }
+  let data;
+  try { data = JSON.parse(el.nextElementSibling.textContent); } catch (e) { return; }
+  const trips = new Map((data.trips || []).map((t) => [t.slug, t]));
+  const groupDefs = data.groups && typeof data.groups === "object" ? data.groups : {};
+  if (!trips.size) { el.remove(); return; }
 
-  // Trips at the same spot share one pin. Trips in a group also get a group
-  // pin, shown when zoomed out; zoom in past the group's split_zoom and the
-  // group pin is replaced by the trips' own pins.
-  const spots = new Map();  // pins for single trips (always shown)
-  const groups = new Map(); // group name -> { pin, spots inside it, splitZoom }
-  const spotKey = (t) => `${(+t.lat).toFixed(3)},${(+t.lng).toFixed(3)}`;
-  const addTo = (bucket, key, lat, lng, t, name = "") => {
-    if (!bucket.has(key)) bucket.set(key, { lat, lng, name, trips: [] });
-    bucket.get(key).trips.push(t);
-  };
-  trips.forEach((t) => {
-    if (t.group && t.glat != null) {
-      if (!groups.has(t.group)) {
-        groups.set(t.group, { pin: { lat: +t.glat, lng: +t.glng, name: t.group, trips: [] }, spots: new Map(), splitZoom: +t.gzoom || 8 });
-      }
-      const g = groups.get(t.group);
-      g.pin.trips.push(t);
-      addTo(g.spots, spotKey(t), +t.lat, +t.lng, t);
-    } else {
-      addTo(spots, spotKey(t), +t.lat, +t.lng, t);
-    }
+  // Build the group tree. Each node: { name, lat, lng, zoom, children: [nodes or trips] }
+  const nodes = {};
+  Object.entries(groupDefs).forEach(([key, g]) => {
+    if (!g || !Array.isArray(g.coords)) return;
+    nodes[key] = { key, name: g.name || key, lat: +g.coords[0], lng: +g.coords[1], zoom: +g.split_zoom || 8, children: [] };
   });
+  const claimed = new Set(); // trips and groups that live inside some group
+  Object.entries(groupDefs).forEach(([key, g]) => {
+    const node = nodes[key];
+    if (!node) return;
+    (g.trips || []).forEach((member) => {
+      if (claimed.has(member) || member === key) return; // each item lives in one group only
+      if (nodes[member]) { node.children.push(nodes[member]); claimed.add(member); }
+      else if (trips.has(member)) { node.children.push(trips.get(member)); claimed.add(member); }
+    });
+  });
+  // A trip with no coordinates of its own sits at its nearest group's spot.
+  (function place(node, parent) {
+    node.children.forEach((c) => {
+      if (c.children) place(c, node);
+      else if (c.lat == null) { c.lat = node.lat; c.lng = node.lng; }
+    });
+  })({ children: Object.values(nodes) }, null);
+  const tripsIn = (node) => node.children.flatMap((c) => (c.children ? tripsIn(c) : [c]));
+
+  const roots = [
+    ...Object.values(nodes).filter((n) => !claimed.has(n.key)),
+    ...[...trips.values()].filter((t) => !claimed.has(t.slug) && t.lat != null),
+  ];
 
   const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const css = getComputedStyle(document.documentElement);
@@ -109,32 +121,36 @@
     return marker;
   }
 
-  const bounds = [];
-  spots.forEach((place) => {
-    pin(place).addTo(map);
-    bounds.push([place.lat, place.lng]);
-  });
-
-  const layers = [];
-  groups.forEach((g) => {
-    const together = L.layerGroup([pin(g.pin)]);
-    const apart = L.layerGroup([...g.spots.values()].map(pin));
-    layers.push({ together, apart, splitZoom: g.splitZoom });
-    bounds.push([g.pin.lat, g.pin.lng]);
-  });
-
-  function update() {
-    const z = map.getZoom();
-    layers.forEach(({ together, apart, splitZoom }) => {
-      const split = z >= splitZoom;
-      if (split) { map.removeLayer(together); apart.addTo(map); }
-      else { map.removeLayer(apart); together.addTo(map); }
-    });
+  // Work out which pins are visible at zoom z. Trips at the same spot share a pin.
+  function pinsAt(z) {
+    const out = new Map();
+    const addTrip = (t) => {
+      const k = `${(+t.lat).toFixed(3)},${(+t.lng).toFixed(3)}`;
+      if (!out.has(k)) out.set(k, { lat: +t.lat, lng: +t.lng, name: "", trips: [] });
+      const p = out.get(k);
+      if (!p.name && t.spot) p.name = t.spot;
+      p.trips.push(t);
+    };
+    const visit = (item) => {
+      if (!item.children) return addTrip(item);
+      if (z < item.zoom) out.set(`group:${item.key}`, { lat: item.lat, lng: item.lng, name: item.name, trips: tripsIn(item) });
+      else item.children.forEach(visit);
+    };
+    roots.forEach(visit);
+    return [...out.values()];
   }
+
+  const layer = L.layerGroup().addTo(map);
+  function draw() {
+    layer.clearLayers();
+    pinsAt(map.getZoom()).forEach((p) => pin(p).addTo(layer));
+  }
+
+  const bounds = roots.map((r) => [r.lat, r.lng]);
   if (bounds.length === 1) map.setView(bounds[0], 6);
   else map.fitBounds(bounds, { padding: [40, 40], maxZoom: 7 });
   map.whenReady(() => {
-    update();
-    map.on("zoomend", () => { map.closePopup(); update(); });
+    draw();
+    map.on("zoomend", () => { map.closePopup(); draw(); });
   });
 })();
