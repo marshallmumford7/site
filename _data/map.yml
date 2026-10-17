@@ -27,8 +27,8 @@ newfoundland:           [46.7464, -53.1526]
 groups:
   delmarva:
     name: Delmarva
-    coords: [38.55, -75.30]
-    split_zoom: 8
+    coords: [38.5000, -75.1500]
+    split_zoom: 5
     trips:
       - assateague
       - prime-hook
@@ -38,8 +38,8 @@ groups:
 
   cornell:
     name: Cornell
-    coords: [42.4534, -76.4735]
-    split_zoom: 12
+    coords: [42.4459, -76.4806]
+    split_zoom: 5
     trips:
       - cornell
       - cornell-fashion-collective-2024
