@@ -29,7 +29,7 @@ groups:
   delmarva:
     name: Delmarva
     coords: [38.5000, -75.1500]
-    split_zoom: 7
+    split_zoom: 6
     trips:
       - assateague
       - prime-hook
@@ -39,9 +39,10 @@ groups:
   ithaca:
     name: Cornell
     coords: [42.4534, -76.4735]
-    split_zoom: 8
+    split_zoom: 6
     trips:
       - cornell
+      -aurora
       - cfc
   cfc:
     name: Cornell Fashion Collective
