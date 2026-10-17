@@ -42,7 +42,7 @@ groups:
     split_zoom: 6
     trips:
       - cornell
-      -aurora
+      - aurora
       - cfc
   cfc:
     name: Cornell Fashion Collective
