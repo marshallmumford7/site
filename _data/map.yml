@@ -23,26 +23,31 @@ aurora:                 [42.49069, -76.5536]
 brians-birding-bonanza: [45.5840, -78.3580]
 cape-town:              [-33.9249, 18.4241]   # Cape Town, South Africa
 newfoundland:           [46.7464, -53.1526]
+chincoteague:           [37.8535, -75.3844]
 
 groups:
   delmarva:
     name: Delmarva
     coords: [38.5000, -75.1500]
-    split_zoom: 5
+    split_zoom: 7
     trips:
       - assateague
       - prime-hook
       - washington-canyon
       - cape-may
       - chincoteague
-
-  cornell:
+  ithaca:
     name: Cornell
-    coords: [42.4459, -76.4806]
-    split_zoom: 5
+    coords: [42.4534, -76.4735]
+    split_zoom: 8
     trips:
       - cornell
+      - cfc
+  cfc:
+    name: Cornell Fashion Collective
+    coords: [42.4459, -76.4806]
+    split_zoom: 15
+    trips:
       - cornell-fashion-collective-2024
       - cornell-fashion-collective-2023
       - cfc-behind-the-scenes
-      - aurora
