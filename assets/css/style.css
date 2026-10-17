@@ -242,3 +242,32 @@ img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
 .copyright-note.is-visible { opacity: 1; transform: none; }
 .lightbox .copyright-note { background: #fff; color: #222; }
 @media (prefers-reduced-motion: reduce) { .copyright-note { transition: none; } }
+
+/* ---------- Lightbox: fit tall photos on screen (iPad/iPhone fix) ---------- */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+}
+
+    .lightbox[open] {
+        grid-template-rows: minmax(0, 1fr) auto;
+    }
+
+.lb-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    overflow: hidden;
+}
+
+    .lb-stage img {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
