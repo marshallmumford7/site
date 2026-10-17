@@ -10,12 +10,14 @@
 {%- assign sorted = site.galleries | sort: "order" -%}
 {%- for g in sorted -%}
   {%- assign p = site.data.map[g.slug] -%}
-  {%- assign group = "" -%}
+  {%- assign group = "" -%}{%- assign gc = nil -%}{%- assign gzoom = 8 -%}
   {%- for pair in site.data.map.groups -%}
     {%- if pair[1].trips contains g.slug -%}
-      {%- assign p = pair[1].coords -%}{%- assign group = pair[1].name | default: pair[0] -%}{%- break -%}
+      {%- assign gc = pair[1].coords -%}{%- assign group = pair[1].name | default: pair[0] -%}
+      {%- assign gzoom = pair[1].split_zoom | default: 8 -%}{%- break -%}
     {%- endif -%}
   {%- endfor -%}
+  {%- if gc and gc.size == 2 -%}{%- unless p and p.size == 2 -%}{%- assign p = gc -%}{%- endunless -%}{%- endif -%}
   {%- if p and p.size == 2 -%}
     {%- assign cover = "" -%}
     {%- if g.cover -%}
@@ -34,7 +36,7 @@
       {%- endfor -%}
     {%- endif -%}
     {%- unless first -%},{%- endunless -%}{%- assign first = false %}
-  {"title": {{ g.title | jsonify }}, "url": {{ g.url | relative_url | jsonify }}, "location": {{ g.location | default: "" | jsonify }}, "lat": {{ p[0] }}, "lng": {{ p[1] }}, "cover": {{ cover | jsonify }}, "group": {{ group | jsonify }}}
+  {"title": {{ g.title | jsonify }}, "url": {{ g.url | relative_url | jsonify }}, "location": {{ g.location | default: "" | jsonify }}, "lat": {{ p[0] }}, "lng": {{ p[1] }}, "cover": {{ cover | jsonify }}, "group": {{ group | jsonify }}{% if gc and gc.size == 2 %}, "glat": {{ gc[0] }}, "glng": {{ gc[1] }}, "gzoom": {{ gzoom }}{% endif %}}
   {%- endif -%}
 {%- endfor %}
 ]</script>

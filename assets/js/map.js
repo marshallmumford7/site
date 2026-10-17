@@ -6,12 +6,27 @@
   try { trips = JSON.parse(el.nextElementSibling.textContent); } catch (e) { return; }
   if (!trips.length) { el.remove(); return; }
 
-  // Trips at the same spot share one pin.
-  const places = new Map();
+  // Trips at the same spot share one pin. Trips in a group also get a group
+  // pin, shown when zoomed out; zoom in past the group's split_zoom and the
+  // group pin is replaced by the trips' own pins.
+  const spots = new Map();  // pins for single trips (always shown)
+  const groups = new Map(); // group name -> { pin, spots inside it, splitZoom }
+  const spotKey = (t) => `${(+t.lat).toFixed(3)},${(+t.lng).toFixed(3)}`;
+  const addTo = (bucket, key, lat, lng, t, name = "") => {
+    if (!bucket.has(key)) bucket.set(key, { lat, lng, name, trips: [] });
+    bucket.get(key).trips.push(t);
+  };
   trips.forEach((t) => {
-    const key = t.group ? `group:${t.group}` : `${(+t.lat).toFixed(3)},${(+t.lng).toFixed(3)}`;
-    if (!places.has(key)) places.set(key, { lat: +t.lat, lng: +t.lng, name: t.group || "", trips: [] });
-    places.get(key).trips.push(t);
+    if (t.group && t.glat != null) {
+      if (!groups.has(t.group)) {
+        groups.set(t.group, { pin: { lat: +t.glat, lng: +t.glng, name: t.group, trips: [] }, spots: new Map(), splitZoom: +t.gzoom || 8 });
+      }
+      const g = groups.get(t.group);
+      g.pin.trips.push(t);
+      addTo(g.spots, spotKey(t), +t.lat, +t.lng, t);
+    } else {
+      addTo(spots, spotKey(t), +t.lat, +t.lng, t);
+    }
   });
 
   const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -77,8 +92,7 @@
     return box;
   }
 
-  const bounds = [];
-  places.forEach((place) => {
+  function pin(place) {
     const n = place.trips.length;
     const marker = L.circleMarker([place.lat, place.lng], {
       radius: 7 + Math.min(n - 1, 3) * 2,
@@ -86,15 +100,41 @@
       weight: 2,
       fillColor: teal,
       fillOpacity: 1,
-    }).addTo(map);
+    });
     const label = place.name || (n === 1 ? place.trips[0].title : place.trips[0].location || place.trips[0].title);
     marker.bindTooltip(n === 1 && !place.name ? label : `${label} \u00b7 ${n} trip${n === 1 ? "" : "s"}`, { direction: "top", offset: [0, -8] });
     marker.bindPopup(popup(place), { maxWidth: 280, minWidth: 220 });
     marker.on("mouseover", () => marker.setStyle({ fillColor: css.getPropertyValue("--accent").trim() || teal }));
     marker.on("mouseout", () => marker.setStyle({ fillColor: teal }));
+    return marker;
+  }
+
+  const bounds = [];
+  spots.forEach((place) => {
+    pin(place).addTo(map);
     bounds.push([place.lat, place.lng]);
   });
 
+  const layers = [];
+  groups.forEach((g) => {
+    const together = L.layerGroup([pin(g.pin)]);
+    const apart = L.layerGroup([...g.spots.values()].map(pin));
+    layers.push({ together, apart, splitZoom: g.splitZoom });
+    bounds.push([g.pin.lat, g.pin.lng]);
+  });
+
+  function update() {
+    const z = map.getZoom();
+    layers.forEach(({ together, apart, splitZoom }) => {
+      const split = z >= splitZoom;
+      if (split) { map.removeLayer(together); apart.addTo(map); }
+      else { map.removeLayer(apart); together.addTo(map); }
+    });
+  }
   if (bounds.length === 1) map.setView(bounds[0], 6);
   else map.fitBounds(bounds, { padding: [40, 40], maxZoom: 7 });
+  map.whenReady(() => {
+    update();
+    map.on("zoomend", () => { map.closePopup(); update(); });
+  });
 })();

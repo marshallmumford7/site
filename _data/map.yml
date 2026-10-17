@@ -8,10 +8,10 @@ shoals-surg:                  [42.9876, -70.6146]
 shoals-marine-mammal-biology: [42.9876, -70.6146]
 ots-south-africa:             [-24.9960, 31.5920]   # Skukuza, Kruger National Park
 algonquin-provincial-park:    [45.5840, -78.3580]
-cornell:                         [42.4534, -76.4735] # Ithaca, New York
-cornell-fashion-collective-2024: [42.4534, -76.4735]
-cornell-fashion-collective-2023: [42.4534, -76.4735]
-cfc-behind-the-scenes:           [42.4534, -76.4735]
+cornell:                         [42.4800, -76.4510] # Sapsucker Woods / Cornell Lab of Ornithology
+cornell-fashion-collective-2024: [42.4459, -76.4806] # Barton Hall
+cornell-fashion-collective-2023: [42.4459, -76.4806] # Barton Hall
+cfc-behind-the-scenes:           [42.4505, -76.4785] # near Barton Hall
 cape-may:                     [38.9351, -74.9060]
 prime-hook:                   [38.8400, -75.2600]   # Prime Hook NWR, near Milton, Delaware
 assateague:                   [38.2000, -75.1500]   # Maryland side; adjust if you were in Virginia
@@ -19,7 +19,7 @@ alaska:                 [60.2266, -148.1840]
 patagonia:              [-45.1539, -66.4921]
 washington-canyon:      [37.4347, -74.4726]
 florida:                [27.9309, -81.1246]
-aurora:                 [42.4534, -76.4735]
+aurora:                 [42.49069, -76.5536]
 brians-birding-bonanza: [45.5840, -78.3580]
 cape-town:              [-33.9249, 18.4241]   # Cape Town, South Africa
 newfoundland:           [46.7464, -53.1526]
@@ -28,9 +28,21 @@ groups:
   delmarva:
     name: Delmarva
     coords: [38.55, -75.30]
+    split_zoom: 8
     trips:
       - assateague
       - prime-hook
       - washington-canyon
       - cape-may
       - chincoteague
+
+  cornell:
+    name: Cornell
+    coords: [42.4534, -76.4735]
+    split_zoom: 12
+    trips:
+      - cornell
+      - cornell-fashion-collective-2024
+      - cornell-fashion-collective-2023
+      - cfc-behind-the-scenes
+      - aurora
