@@ -1,0 +1,38 @@
+/* ---------- Prints section ---------- */
+.prints { padding-block: clamp(4rem, 10vw, 7rem); border-top: 1px solid var(--rule); }
+.prints-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+.prints-grid > .prints-text:only-child { grid-column: 1 / -1; max-width: 36rem; margin-inline: auto; }
+
+.prints-examples { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.prints-examples li:first-child { grid-column: 1 / -1; }
+.prints-examples img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.prints-examples li:not(:first-child) img { aspect-ratio: 1; }
+.prints-examples-1 li img { aspect-ratio: 4 / 5; }
+.prints-examples-2 li:not(:first-child) { grid-column: 1 / -1; }
+.prints-examples-2 li:not(:first-child) img { aspect-ratio: 4 / 3; }
+
+.prints-text p { margin: 0 0 1rem; }
+.prints-lede { font-family: var(--serif); font-size: clamp(1.4rem, 2.6vw, 1.75rem); line-height: 1.35; font-weight: 300; }
+.prints-text > p:not(.prints-lede):not(.actions) { color: var(--muted); }
+
+.prints-form { display: grid; gap: 1rem; margin-top: 1.75rem; }
+.prints-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.prints-form label { display: grid; gap: 0.35rem; }
+.prints-form label > span { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.prints-form label small { text-transform: none; letter-spacing: 0; font-weight: 400; }
+.prints-form input, .prints-form select, .prints-form textarea {
+  width: 100%; padding: 0.75rem 0.85rem; border: 1px solid var(--rule); border-radius: 0;
+  background: var(--paper); color: var(--ink); font: 400 1rem/1.4 var(--sans);
+}
+.prints-form textarea { resize: vertical; }
+.prints-form input:focus, .prints-form select:focus, .prints-form textarea:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 2px color-mix(in srgb, var(--teal) 35%, transparent); }
+.prints-form .actions { justify-content: flex-start; margin: 0.5rem 0 0; }
+.prints-form .button { cursor: pointer; font-family: var(--sans); }
+.prints-note { font-size: 0.85rem; color: var(--muted); }
+
+@media (max-width: 760px) {
+  .prints-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 420px) {
+  .prints-row { grid-template-columns: 1fr; }
+}

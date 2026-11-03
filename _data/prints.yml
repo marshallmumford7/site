@@ -1,0 +1,13 @@
+# Options shown in the print request form. Edit freely.
+sizes:
+  - 8 × 10 in
+  - 11 × 14 in
+  - 16 × 20 in
+  - 20 × 30 in
+  - Something else
+finishes:
+  - Matte paper
+  - Glossy paper
+  - Canvas
+  - Metal
+  - Not sure yet
