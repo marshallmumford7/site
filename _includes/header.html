@@ -7,7 +7,7 @@
     </ul>
     <a class="wordmark" href="{{ '/' | relative_url }}"><img src="{{ '/assets/img/logo.png' | relative_url }}" alt="Marshall Mumford" width="1242" height="176"></a>
     <ul class="nav-right">
-      <li><a href="{{ '/#contact' | relative_url }}">Contact</a></li>
+      <li><a href="{{ '/contact/' | relative_url }}"{% if page.url == '/contact/' %} aria-current="page"{% endif %}>Contact</a></li>
       <li><a href="{{ site.instagram }}">Instagram</a></li>
     </ul>
   </nav>

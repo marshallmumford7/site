@@ -41,8 +41,8 @@ body_class: home
   <h2 class="section-title">Contact</h2>
   <p>Questions about a photo, prints, or working together? I'd love to hear from you.</p>
   <p class="actions">
-    {% if site.email %}<a class="button" href="mailto:{{ site.email }}">Email me</a>{% endif %}
-    <a class="button{% if site.email %} button-quiet{% endif %}" href="https://ig.me/m/{{ site.instagram_handle }}">Message me on Instagram</a>
+    <a class="button" href="{{ '/contact/' | relative_url }}">Get in touch</a>
+    <a class="button button-quiet" href="{{ '/contact/#prints' | relative_url }}">Order a print</a>
   </p>
 </section>
 

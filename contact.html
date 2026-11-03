@@ -1,0 +1,40 @@
+---
+layout: default
+title: Contact
+permalink: /contact/
+---
+<section class="wrap contact-page">
+  <h1>Contact</h1>
+  <p class="contact-lede">Questions about a photo, prints, or working together? I'd love to hear from you.</p>
+
+  <p class="actions">
+    {% if site.email %}<a class="button" href="mailto:{{ site.email }}">Email me</a>{% endif %}
+    <a class="button{% if site.email %} button-quiet{% endif %}" href="https://ig.me/m/{{ site.instagram_handle }}">Message me on Instagram</a>
+  </p>
+
+  <ul class="contact-details">
+    {% if site.email %}<li><span>Email</span><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>{% endif %}
+    <li><span>Instagram</span><a href="{{ site.instagram }}">@{{ site.instagram_handle }}</a></li>
+    {% if site.ebird %}<li><span>eBird</span><a href="{{ site.ebird }}">My bird photos and sightings</a></li>{% endif %}
+  </ul>
+</section>
+
+{% include prints.html %}
+
+<style>
+  .contact-page { max-width: calc(40rem + 2 * var(--gutter)); padding-top: clamp(3rem, 8vw, 5rem); padding-bottom: clamp(3rem, 7vw, 4.5rem); text-align: center; }
+  .contact-page h1 { font-size: clamp(2.6rem, 7vw, 4.75rem); font-weight: 300; letter-spacing: -0.02em; }
+  .contact-page h1::after { content: ""; display: block; width: 3.5rem; height: 3px; margin: 1rem auto 0; background: var(--teal); border-radius: 2px; }
+  .contact-lede { margin: 1.5rem auto 0; max-width: 32rem; font-family: var(--serif); font-size: clamp(1.2rem, 2.2vw, 1.45rem); line-height: 1.55; color: var(--muted); }
+  .contact-page .actions { justify-content: center; margin-top: 2rem; }
+  .contact-details { display: grid; gap: 0.6rem; margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--rule); }
+  .contact-details li { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; }
+  .contact-details span { min-width: 6rem; text-align: right; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); line-height: 1.9; }
+  .contact-details a { min-width: 14rem; text-align: left; }
+  @media (max-width: 480px) {
+    .contact-page .actions .button { flex: 1 1 100%; text-align: center; }
+    .contact-details li { flex-direction: column; align-items: center; gap: 0.1rem; }
+    .contact-details span, .contact-details a { min-width: 0; text-align: center; }
+  }
+  .contact-page ~ .prints { padding-top: clamp(3rem, 7vw, 4.5rem); }
+</style>
