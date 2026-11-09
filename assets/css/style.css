@@ -271,3 +271,33 @@ img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
         max-height: 100%;
         object-fit: contain;
     }
+/* ---------- Carousel: random start + progressive loading ---------- */
+.carousel.is-ready .carousel-track {
+    animation: none !important;
+    will-change: transform;
+}
+
+.carousel-set {
+    height: var(--wall, 480px);
+}
+
+.cgroup[hidden] {
+    display: none !important;
+}
+
+.cgroup-box a {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+    .cgroup-box a.is-loaded {
+        opacity: 1;
+    }
+
+.carousel-track {
+    transition: opacity 0.4s ease;
+}
+
+.carousel.is-swapping .carousel-track {
+    opacity: 0.15;
+}
